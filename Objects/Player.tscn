@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://b4nt588r5wjpm"]
+
+[ext_resource type="Script" uid="uid://h3p3hnhneg0u" path="res://Scripts/Player.cs" id="1_8r7yd"]
+[ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="2_yk4ok"]
+[ext_resource type="Script" uid="uid://bs5wsp6g0j7u6" path="res://Objects/RadialMenu.cs" id="3_yk4ok"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4ajx2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8r7yd"]
+radius = 82.50152
+
+[node name="Player" type="CharacterBody2D" unique_id=474279547]
+scale = Vector2(2, 2)
+script = ExtResource("1_8r7yd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=54145823]
+shape = SubResource("CircleShape2D_4ajx2")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=381698344]
+position = Vector2(0.0056630373, 2.3841858e-06)
+scale = Vector2(-0.62866265, 0.6000018)
+texture = ExtResource("2_yk4ok")
+
+[node name="ScanArea" type="Area2D" parent="." unique_id=265861329]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScanArea" unique_id=850814515]
+shape = SubResource("CircleShape2D_8r7yd")
+
+[node name="TransformCircle" type="Node2D" parent="." unique_id=1010078970]
+visible = false
+scale = Vector2(0.2, 0.2)
+script = ExtResource("3_yk4ok")

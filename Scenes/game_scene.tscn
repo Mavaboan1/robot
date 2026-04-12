@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://6w7xbicvxkie"]
+
+[ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="1_x87qo"]
+[ext_resource type="PackedScene" uid="uid://c2avgpaxl4q1s" path="res://Objects/Lightning Creature Corpse.tscn" id="2_b6fju"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x87qo"]
+size = Vector2(1168, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_x87qo"]
+
+[node name="Game Scene" type="Node2D" unique_id=1544576619]
+
+[node name="Player" parent="." unique_id=474279547 instance=ExtResource("1_x87qo")]
+position = Vector2(387, 397)
+
+[node name="Floor" type="StaticBody2D" parent="." unique_id=402104725]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1732525276]
+position = Vector2(572, 427)
+shape = SubResource("RectangleShape2D_x87qo")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Floor" unique_id=810903754]
+position = Vector2(573.9999, 427)
+scale = Vector2(1155.9999, 19.999994)
+mesh = SubResource("BoxMesh_x87qo")
+
+[node name="LightningCreatureCorpse" parent="." unique_id=1817367004 instance=ExtResource("2_b6fju")]
+position = Vector2(600, 398)
+CreatureType = 1
