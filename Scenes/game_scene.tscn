@@ -25,5 +25,9 @@ scale = Vector2(1155.9999, 19.999994)
 mesh = SubResource("BoxMesh_x87qo")
 
 [node name="LightningCreatureCorpse" parent="." unique_id=1817367004 instance=ExtResource("2_b6fju")]
-position = Vector2(600, 398)
+position = Vector2(602, 403)
 CreatureType = 1
+
+[node name="LightningCreatureCorpse" parent="LightningCreatureCorpse" unique_id=623913075 instance=ExtResource("2_b6fju")]
+position = Vector2(-519, -11)
+CreatureType = 2
