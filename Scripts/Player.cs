@@ -66,7 +66,6 @@ public partial class Player : CharacterBody2D
         isBlitzing = false;
 }
 
-    // Normal movement
     if (!IsOnFloor())
         velocity.Y += Gravity * (float)delta;
 
@@ -149,7 +148,6 @@ private void PlayScanPulse()
 
     public void HandleTransform()
 {
-    // OPEN menu
     if (Input.IsActionJustPressed("Player_Transform"))
     {
         isTransformMenuOpen = true;
@@ -159,7 +157,6 @@ private void PlayScanPulse()
 
     }
 
-    // RELEASE → select
     if (Input.IsActionJustReleased("Player_Transform"))
     {
         if (isTransformMenuOpen)
