@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://h3p3hnhneg0u" path="res://Scripts/Player.cs" id="1_8r7yd"]
 [ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="2_yk4ok"]
-[ext_resource type="Script" uid="uid://bs5wsp6g0j7u6" path="res://Objects/RadialMenu.cs" id="3_yk4ok"]
+[ext_resource type="Script" uid="uid://bs5wsp6g0j7u6" path="res://Scripts/RadialMenu.cs" id="3_yk4ok"]
 [ext_resource type="Texture2D" uid="uid://buedkj5qq32k8" path="res://Images/pngimg.com - circle_PNG63.png" id="4_gijnf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4ajx2"]
@@ -38,3 +38,8 @@ texture = ExtResource("4_gijnf")
 visible = false
 scale = Vector2(0.2, 0.2)
 script = ExtResource("3_yk4ok")
+
+[node name="Indicator" type="Sprite2D" parent="." unique_id=1829408668]
+visible = false
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_yk4ok")

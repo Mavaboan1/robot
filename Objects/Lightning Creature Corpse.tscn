@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c2avgpaxl4q1s"]
 
-[ext_resource type="Script" uid="uid://ciuivxtk0vren" path="res://Objects/ScannableObject.cs" id="1_qai5k"]
+[ext_resource type="Script" uid="uid://ciuivxtk0vren" path="res://Scripts/ScannableObject.cs" id="1_qai5k"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4swkm"]
 height = 28.260866

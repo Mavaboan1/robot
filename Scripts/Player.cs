@@ -7,12 +7,13 @@ public partial class Player : CharacterBody2D
     [Export] public float BaseSpeed = 200f;
     [Export] public float BaseJumpVelocity = -400f;
     [Export] public float BaseSize = 1f;
-    private Sprite2D playerSprite;
 
+    private Sprite2D playerSprite;
     private float currentSpeed;
     private float currentJumpVelocity;
     private float currentSize;
     private int currentForm = 0;
+    private Sprite2D indicator;
 
     [Export] public float Gravity = 900f;
     private Area2D scanArea;
@@ -24,6 +25,15 @@ public partial class Player : CharacterBody2D
     private Node2D transformCircle;
     private Sprite2D scanPulse;
 
+    private bool isCharged = false;
+
+    [Export] public float BlitzSpeed = 800f;
+    [Export] public float BlitzDuration = 0.2f;
+
+    private bool isBlitzing = false;
+    private float blitzTimer = 0f;
+    private Vector2 blitzDirection;
+
     public override void _Ready()
     {
         scanArea = GetNode<Area2D>("ScanArea");
@@ -33,6 +43,8 @@ public partial class Player : CharacterBody2D
         transformCircle = GetNode<Node2D>("TransformCircle");
         radialMenu = GetNode<RadialMenu>("TransformCircle");
         scanPulse = GetNode<Sprite2D>("ScanPulse");
+        indicator = GetNode<Sprite2D>("Indicator");
+
         radialMenu.Visible = false;
         scanArea.Monitoring = true;
 
@@ -46,16 +58,34 @@ public partial class Player : CharacterBody2D
         Vector2 velocity = Velocity;
 
         
-        if (!IsOnFloor())
-            velocity.Y += Gravity * (float)delta;
+      if (isBlitzing)
+{
+    blitzTimer -= (float)delta;
 
-       
-        if (Input.IsActionJustPressed("Player_Jump") && IsOnFloor())
-            velocity.Y = currentJumpVelocity;
+    if (blitzTimer <= 0)
+        isBlitzing = false;
+}
+
+    // Normal movement
+    if (!IsOnFloor())
+        velocity.Y += Gravity * (float)delta;
+
+    if (Input.IsActionJustPressed("Player_Jump") && IsOnFloor())
+        velocity.Y = currentJumpVelocity;
+
+    if (!isBlitzing)
+{
+    float direction = Input.GetAxis("Player_Left", "Player_Right");
+    velocity.X = Mathf.Lerp(velocity.X, direction * currentSpeed, 0.15f);
+}
+    Velocity = velocity;
+    HandleBlitz();
+
+    
+    
+
         
-        float direction = Input.GetAxis("Player_Left", "Player_Right");
-        velocity.X = direction * currentSpeed;
-        Velocity = velocity;
+
         MoveAndSlide();
         Scan();
         HandleTransform();
@@ -187,9 +217,8 @@ private int GetSelectedCreature()
     Vector2 mousePos = GetGlobalMousePosition();
     Vector2 direction = (mousePos - GlobalPosition).Normalized();
 
-    float angle = Mathf.Atan2(direction.Y, direction.X); // -PI to PI
+    float angle = Mathf.Atan2(direction.Y, direction.X); 
 
-    // Convert to 0 → 2PI
     if (angle < 0)
         angle += Mathf.Pi * 2;
 
@@ -238,8 +267,51 @@ private void ApplyStats(float speed, float jump, float size)
     currentJumpVelocity = jump;
     currentSize = size;
 
-    // Scale the player visually
     Scale = new Vector2(currentSize, currentSize);
+}
+//Form 1 Abilities
+private void HandleBlitz()
+{
+    if (!Input.IsActionJustPressed("Player_Blitz"))
+        return;
+
+    if (currentForm != 1 || !isCharged)
+        return;
+
+    Vector2 mousePos = GetGlobalMousePosition();
+    blitzDirection = (mousePos - GlobalPosition).Normalized();
+
+    Velocity += blitzDirection * BlitzSpeed;
+
+    isBlitzing = true;
+    blitzTimer = BlitzDuration;
+
+    SetCharged(false);
+
+    GD.Print("BLITZ!");
+}
+public void SetCharged(bool value)
+{
+    if (currentForm != 1){
+            return;
+        }
+    isCharged = value;
+
+    if (indicator == null)
+        return;
+
+    if (isCharged)
+    {
+        indicator.Visible = true;
+        indicator.Modulate = new Color(1, 1, 0);
+    }
+    else
+    {
+        indicator.Visible = false;
+        indicator.Modulate = new Color(1, 1, 1); 
+    }
+    
+    GD.Print(value ? "Charged!" : "Discharged");
 }
     }
 

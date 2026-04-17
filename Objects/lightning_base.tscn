@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c014xn7hjreim"]
+
+[ext_resource type="Script" uid="uid://bu03rtrbajwea" path="res://Objects/Lightning.cs" id="1_6yyer"]
+[ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_mv6rj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ldhke"]
+
+[node name="Lightning" type="Area2D" unique_id=521973905]
+script = ExtResource("1_6yyer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=937876821]
+shape = SubResource("RectangleShape2D_ldhke")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=265732803]
+modulate = Color(1, 1, 0.16862746, 1)
+z_index = -2
+position = Vector2(-2.3841858e-07, 2.3841858e-07)
+scale = Vector2(0.625, 0.625)
+texture = ExtResource("1_mv6rj")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
