@@ -14,6 +14,7 @@ public partial class Player : CharacterBody2D
     private float currentSize;
     private int currentForm = 0;
     private Sprite2D indicator;
+    private int facingDirection = 1; // 1 = right, -1 = left
 
     [Export] public float Gravity = 900f;
     private Area2D scanArea;
@@ -29,6 +30,7 @@ public partial class Player : CharacterBody2D
 
     [Export] public float BlitzSpeed = 800f;
     [Export] public float BlitzDuration = 0.2f;
+    [Export] public float ChargedSpeedMultiplier = 2f;
 
     private bool isBlitzing = false;
     private float blitzTimer = 0f;
@@ -75,7 +77,21 @@ public partial class Player : CharacterBody2D
     if (!isBlitzing)
 {
     float direction = Input.GetAxis("Player_Left", "Player_Right");
-    velocity.X = Mathf.Lerp(velocity.X, direction * currentSpeed, 0.15f);
+
+if (direction != 0)
+    facingDirection = (int)Mathf.Sign(direction);
+
+float speedMultiplier = isCharged ? ChargedSpeedMultiplier : 1f;
+
+velocity.X = Mathf.Lerp(
+    velocity.X,
+    direction * currentSpeed * speedMultiplier,
+    0.15f
+);}
+if (isBlitzing)
+{
+    velocity.X = blitzDirection.X * BlitzSpeed;
+    velocity.Y = 0;
 }
     Velocity = velocity;
     HandleBlitz();
@@ -171,6 +187,8 @@ private void PlayScanPulse()
 private void SelectTransform(int option)
 {
     currentForm = option;
+    if (currentForm != 1)
+        SetCharged(false);
     GD.Print("Selected: " + option);
 
     var sprite = playerSprite;
@@ -275,10 +293,8 @@ private void HandleBlitz()
     if (currentForm != 1 || !isCharged)
         return;
 
-    Vector2 mousePos = GetGlobalMousePosition();
-    blitzDirection = (mousePos - GlobalPosition).Normalized();
+    blitzDirection = new Vector2(facingDirection, 0);
 
-    Velocity += blitzDirection * BlitzSpeed;
 
     isBlitzing = true;
     blitzTimer = BlitzDuration;
@@ -289,9 +305,9 @@ private void HandleBlitz()
 }
 public void SetCharged(bool value)
 {
-    if (currentForm != 1){
-            return;
-        }
+    if (value && currentForm != 1)
+        return;
+
     isCharged = value;
 
     if (indicator == null)
@@ -300,14 +316,14 @@ public void SetCharged(bool value)
     if (isCharged)
     {
         indicator.Visible = true;
-        indicator.Modulate = new Color(1, 1, 0);
+        indicator.Modulate = new Color(1, 1, 0); // yellow
     }
     else
     {
         indicator.Visible = false;
-        indicator.Modulate = new Color(1, 1, 1); 
+        indicator.Modulate = new Color(1, 1, 1); // white
     }
-    
+
     GD.Print(value ? "Charged!" : "Discharged");
 }
     }
