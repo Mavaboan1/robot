@@ -1,8 +1,10 @@
 [gd_scene format=3 uid="uid://6w7xbicvxkie"]
 
 [ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="1_x87qo"]
-[ext_resource type="PackedScene" uid="uid://c2avgpaxl4q1s" path="res://Objects/Lightning Creature Corpse.tscn" id="2_b6fju"]
-[ext_resource type="PackedScene" uid="uid://c014xn7hjreim" path="res://Objects/lightning_base.tscn" id="3_6h5vk"]
+[ext_resource type="PackedScene" uid="uid://c2avgpaxl4q1s" path="res://Objects/Scannables/Lightning Creature Corpse.tscn" id="2_b6fju"]
+[ext_resource type="PackedScene" uid="uid://c014xn7hjreim" path="res://Objects/Charges/lightning_base.tscn" id="3_6h5vk"]
+[ext_resource type="PackedScene" uid="uid://bthjxonhg2umg" path="res://Objects/Scannables/Water Creature Corpse.tscn" id="4_fiftr"]
+[ext_resource type="PackedScene" uid="uid://dln48usgg8m5l" path="res://Objects/Charges/WaterTrigger.tscn" id="5_1ixah"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x87qo"]
 size = Vector2(1168, 20)
@@ -12,7 +14,7 @@ size = Vector2(1168, 20)
 [node name="Game Scene" type="Node2D" unique_id=1544576619]
 
 [node name="Player" parent="." unique_id=474279547 instance=ExtResource("1_x87qo")]
-position = Vector2(140, 384)
+position = Vector2(548, 394)
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=402104725]
 
@@ -26,12 +28,19 @@ scale = Vector2(1155.9999, 19.999994)
 mesh = SubResource("BoxMesh_x87qo")
 
 [node name="LightningCreatureCorpse" parent="." unique_id=1817367004 instance=ExtResource("2_b6fju")]
-position = Vector2(602, 403)
+position = Vector2(808, 401)
 CreatureType = 1
 
 [node name="Lightning Base" parent="." unique_id=521973905 instance=ExtResource("3_6h5vk")]
-position = Vector2(454, 412)
+position = Vector2(717, 408)
 
 [node name="Walls" type="Node2D" parent="." unique_id=654685418]
 
 [node name="Node2D" type="Node2D" parent="." unique_id=609034174]
+
+[node name="LightningCreatureCorpse2" parent="." unique_id=623913075 instance=ExtResource("4_fiftr")]
+position = Vector2(339, 409)
+
+[node name="WaterTrigger" parent="." unique_id=1509592448 instance=ExtResource("5_1ixah")]
+position = Vector2(149, 403)
+scale = Vector2(15, 15)

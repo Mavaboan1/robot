@@ -9,7 +9,6 @@ public partial class ScannableObject : Node2D
 
     public void Scanning(Player player)
     {
-        
         if (Scanned)
             return;
 
@@ -17,9 +16,8 @@ public partial class ScannableObject : Node2D
 
         GD.Print($"Scanned! Type: {CreatureType}, Unlock: {AbilityUnlock}");
 
-        // Send data to player
-        player.ReceiveScan(CreatureType, AbilityUnlock);
+        player.scanForm.ReceiveScan(player, CreatureType);
 
-        Modulate = new Color(0.5f, 0.5f, 0.5f); // greyed out
+        Modulate = new Color(0.5f, 0.5f, 0.5f);
     }
-    }
+}

@@ -23,7 +23,6 @@ scale = Vector2(-0.62866265, 0.6000018)
 texture = ExtResource("2_yk4ok")
 
 [node name="ScanArea" type="Area2D" parent="." unique_id=265861329]
-monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScanArea" unique_id=850814515]
 shape = SubResource("CircleShape2D_8r7yd")

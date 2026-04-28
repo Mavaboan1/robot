@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c014xn7hjreim"]
 
-[ext_resource type="Script" uid="uid://bu03rtrbajwea" path="res://Objects/Lightning.cs" id="1_6yyer"]
+[ext_resource type="Script" uid="uid://bu03rtrbajwea" path="res://Scripts/Lightning.cs" id="1_6yyer"]
 [ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_mv6rj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ldhke"]

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dln48usgg8m5l"]
+
+[ext_resource type="Script" uid="uid://darxxqkvuclxq" path="res://Scripts/WaterTrigger.cs" id="1_wcpll"]
+[ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="2_w8pex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ldhke"]
+
+[node name="WaterTrigger" type="Area2D" unique_id=521973905]
+script = ExtResource("1_wcpll")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=937876821]
+shape = SubResource("RectangleShape2D_ldhke")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=265732803]
+modulate = Color(0, 0.38431373, 0.7764706, 0.25882354)
+z_index = -2
+position = Vector2(-2.3841858e-07, 2.3841858e-07)
+scale = Vector2(0.625, 0.625)
+texture = ExtResource("2_w8pex")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

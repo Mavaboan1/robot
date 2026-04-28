@@ -1,3 +1,4 @@
+// Player.cs
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -7,324 +8,224 @@ public partial class Player : CharacterBody2D
     [Export] public float BaseSpeed = 200f;
     [Export] public float BaseJumpVelocity = -400f;
     [Export] public float BaseSize = 1f;
+    [Export] public float Gravity = 900f;
 
     private Sprite2D playerSprite;
+    private Sprite2D indicator;
+    private Area2D scanArea;
+    private RadialMenu radialMenu;
+    private Node2D transformCircle;
+
     private float currentSpeed;
     private float currentJumpVelocity;
     private float currentSize;
-    private int currentForm = 0;
-    private Sprite2D indicator;
-    private int facingDirection = 1; // 1 = right, -1 = left
 
-    [Export] public float Gravity = 900f;
-    private Area2D scanArea;
-    private RadialMenu radialMenu;
+    public FormType CurrentForm = FormType.Scan;
+    private int facingDirection = 1;
+
     private bool isTransformMenuOpen = false;
 
-    private HashSet<int> knownCreatures = new HashSet<int>();
-    private List<int> knownCreatureList = new List<int>();
-    private Node2D transformCircle;
-    private Sprite2D scanPulse;
+    private HashSet<int> knownCreatures = new();
+    private List<int> knownCreatureList = new();
 
-    private bool isCharged = false;
+    public ScanForm scanForm;
+    public LightningForm lightningForm;
+    public WaterForm waterForm;
 
-    [Export] public float BlitzSpeed = 800f;
-    [Export] public float BlitzDuration = 0.2f;
-    [Export] public float ChargedSpeedMultiplier = 2f;
-
-    private bool isBlitzing = false;
-    private float blitzTimer = 0f;
-    private Vector2 blitzDirection;
+    public HashSet<int> KnownCreatures => knownCreatures;
+    public List<int> KnownCreatureList => knownCreatureList;
+    public Area2D ScanArea => scanArea;
 
     public override void _Ready()
     {
-        scanArea = GetNode<Area2D>("ScanArea");
-        knownCreatures.Add(0);
         playerSprite = GetNode<Sprite2D>("Sprite2D");
-        knownCreatureList.Add(0);
+        indicator = GetNode<Sprite2D>("Indicator");
+        scanArea = GetNode<Area2D>("ScanArea");
         transformCircle = GetNode<Node2D>("TransformCircle");
         radialMenu = GetNode<RadialMenu>("TransformCircle");
-        scanPulse = GetNode<Sprite2D>("ScanPulse");
-        indicator = GetNode<Sprite2D>("Indicator");
 
         radialMenu.Visible = false;
-        scanArea.Monitoring = true;
+        indicator.Visible = false;
+
+        knownCreatures.Add(0);
+        knownCreatureList.Add(0);
 
         currentSpeed = BaseSpeed;
         currentJumpVelocity = BaseJumpVelocity;
         currentSize = BaseSize;
 
+        scanForm = new ScanForm();
+        lightningForm = new LightningForm();
+        waterForm = new WaterForm();
     }
+
     public override void _PhysicsProcess(double delta)
+    {
+        HandleMovement(delta);
+        MoveAndSlide();
+
+        HandleTransform();
+        UpdateRadialSelection();
+        FixRadialScale();
+
+        switch (CurrentForm)
+{
+    case FormType.Scan:
+        scanForm.Update(this, delta);
+        break;
+
+    case FormType.Lightning:
+        lightningForm.Update(this, delta);
+        break;
+
+    case FormType.Water:
+        waterForm.Update(this, delta);
+        break;
+}
+    }
+
+    private void HandleMovement(double delta)
     {
         Vector2 velocity = Velocity;
 
-        
-      if (isBlitzing)
-{
-    blitzTimer -= (float)delta;
+        if (!IsOnFloor())
+            velocity.Y += Gravity * (float)delta;
 
-    if (blitzTimer <= 0)
-        isBlitzing = false;
-}
+        if (Input.IsActionJustPressed("Player_Jump") && IsOnFloor())
+            velocity.Y = currentJumpVelocity;
 
-    if (!IsOnFloor())
-        velocity.Y += Gravity * (float)delta;
+        float direction = Input.GetAxis("Player_Left", "Player_Right");
 
-    if (Input.IsActionJustPressed("Player_Jump") && IsOnFloor())
-        velocity.Y = currentJumpVelocity;
+        if (direction != 0)
+            facingDirection = (int)Mathf.Sign(direction);
 
-    if (!isBlitzing)
-{
-    float direction = Input.GetAxis("Player_Left", "Player_Right");
+        float speed = currentSpeed;
 
-if (direction != 0)
-    facingDirection = (int)Mathf.Sign(direction);
+        if (CurrentForm == FormType.Lightning && lightningForm.IsCharged)
+            speed *= lightningForm.SpeedMultiplier;
 
-float speedMultiplier = isCharged ? ChargedSpeedMultiplier : 1f;
+        velocity.X = Mathf.Lerp(velocity.X, direction * speed, 0.15f);
 
-velocity.X = Mathf.Lerp(
-    velocity.X,
-    direction * currentSpeed * speedMultiplier,
-    0.15f
-);}
-if (isBlitzing)
-{
-    velocity.X = blitzDirection.X * BlitzSpeed;
-    velocity.Y = 0;
-}
-    Velocity = velocity;
-    HandleBlitz();
-
-    
-    
-
-        
-
-        MoveAndSlide();
-        Scan();
-        HandleTransform();
-        UpdateRadialSelection();
-        LateRadialFix();
+        Velocity = velocity;
     }
-    public void Scan()
-{
-    if (currentForm != 0)
-        return;
-    if (Input.IsActionJustPressed("Player_Scan"))
-    {
-        DoScan();
-        PlayScanPulse();
-    }
-}
-private void DoScan()
-{
-    var bodies = scanArea.GetOverlappingBodies();
 
-    foreach (Node body in bodies)
+    public int GetFacingDirection()
     {
-        if (body.IsInGroup("Scannable"))
+        return facingDirection;
+    }
+
+    public void ApplyStats(float speed, float jump, float size)
+    {
+        currentSpeed = speed;
+        currentJumpVelocity = jump;
+        currentSize = size;
+
+        Scale = new Vector2(size, size);
+    }
+
+    public void SetColor(Color color)
+    {
+        playerSprite.Modulate = color;
+    }
+
+    public void SetIndicator(bool visible, Color color)
+    {
+        indicator.Visible = visible;
+        indicator.Modulate = color;
+    }
+
+    private void HandleTransform()
+    {
+        if (Input.IsActionJustPressed("Player_Transform"))
         {
-            if (body is ScannableObject scannable)
-            {
-                scannable.Scanning(this);
-            }
-        }
-    }
-}
-private void PlayScanPulse()
-{
-    scanPulse.Visible = true;
-    scanPulse.Scale = new Vector2(0.05f, 0.05f);
-    scanPulse.Modulate = new Color(1, 1, 1, 1);
-
-    var tween = CreateTween();
-
-    tween.TweenProperty(scanPulse, "scale", new Vector2(0.4f, 0.4f), 0.4f);
-    tween.TweenProperty(scanPulse, "modulate:a", 0f, 0.4f);
-
-    tween.TweenCallback(Callable.From(() =>
-    {
-        scanPulse.Visible = false;
-    }));
-}
-
-    public void ReceiveScan(int creatureType, int abilityUnlock)
-{
-    if (knownCreatures.Add(creatureType))
-    {
-        knownCreatureList.Add(creatureType);
-        GD.Print($"New creature discovered: {creatureType}");
-    }
-    else
-    {
-        GD.Print($"Creature {creatureType} already known");
-    }
-}
-
-    public void HandleTransform()
-{
-    if (Input.IsActionJustPressed("Player_Transform"))
-    {
-        isTransformMenuOpen = true;
-        Engine.TimeScale = 0.1f;
-        transformCircle.Visible = true;
-        radialMenu.Options = knownCreatureList;
-
-    }
-
-    if (Input.IsActionJustReleased("Player_Transform"))
-    {
-        if (isTransformMenuOpen)
-        {
-            int selected = GetSelectedCreature();
-            SelectTransform(selected);
+            isTransformMenuOpen = true;
+            Engine.TimeScale = 0.1f;
+            transformCircle.Visible = true;
+            radialMenu.Options = knownCreatureList;
         }
 
+        if (Input.IsActionJustReleased("Player_Transform"))
+        {
+            if (isTransformMenuOpen)
+                SelectTransform((FormType)GetSelectedCreature());
+            CloseTransformMenu();
+        }
+    }
+
+    private void SelectTransform(FormType form)
+{
+    if (form == CurrentForm)
+    {
         CloseTransformMenu();
+        return;
     }
-}
-private void SelectTransform(int option)
-{
-    currentForm = option;
-    if (currentForm != 1)
-        SetCharged(false);
-    GD.Print("Selected: " + option);
+    CurrentForm = form;
 
-    var sprite = playerSprite;
-    switch (option)
+    if (CurrentForm != FormType.Water)
+        waterForm.ResetState(this);
+
+    if (CurrentForm != FormType.Lightning)
+        lightningForm.SetCharged(this, false);
+    switch (form)
     {
-        case 0: 
-            ApplyStats(BaseSpeed, BaseJumpVelocity, BaseSize);
-            sprite.Modulate = new Color(1, 1, 1); 
+        case FormType.Scan:
+            ApplyStats(scanForm.Speed, scanForm.Jump, scanForm.Size);
+            SetColor(scanForm.FormColor);
             break;
 
-        case 1: 
-            ApplyStats(
-                BaseSpeed * 0.8f,          
-                BaseJumpVelocity * 1.2f,   
-                BaseSize * 2f            
-            );
-            sprite.Modulate = new Color(0, 0, 1); 
+        case FormType.Lightning:
+            ApplyStats(lightningForm.Speed, lightningForm.Jump, lightningForm.Size);
+            SetColor(lightningForm.FormColor);
             break;
 
-        case 2: 
-            ApplyStats(
-                BaseSpeed * 2f,          
-                BaseJumpVelocity * 0.7f,   
-                BaseSize * 0.5f            
-            );
-            sprite.Modulate = new Color(0, 1, 0); 
+        case FormType.Water:
+            ApplyStats(waterForm.Speed, waterForm.Jump, waterForm.Size);
+            SetColor(waterForm.FormColor);
             break;
     }
-
-    CloseTransformMenu();
 }
-private void CloseTransformMenu()
-{
-    isTransformMenuOpen = false;
-    Engine.TimeScale = 1f;
-    transformCircle.Visible = false;
 
-}
-private int GetSelectedCreature()
-{
-    Vector2 mousePos = GetGlobalMousePosition();
-    Vector2 direction = (mousePos - GlobalPosition).Normalized();
-
-    float angle = Mathf.Atan2(direction.Y, direction.X); 
-
-    if (angle < 0)
-        angle += Mathf.Pi * 2;
-
-    int count = knownCreatureList.Count;
-
-    float sliceSize = (Mathf.Pi * 2) / count;
-
-    int index = Mathf.FloorToInt(angle / sliceSize);
-
-    GD.Print($"Selected creature: {knownCreatureList[index]}");
-
-    return knownCreatureList[index];
-}
-private void UpdateRadialSelection()
-{
-    if (!isTransformMenuOpen)
-        return;
-
-    Vector2 mousePos = GetGlobalMousePosition();
-    Vector2 dir = (mousePos - GlobalPosition).Normalized();
-
-    float angle = Mathf.Atan2(dir.Y, dir.X);
-    if (angle < 0)
-        angle += Mathf.Tau;
-
-    int count = knownCreatureList.Count;
-    float sliceSize = Mathf.Tau / count;
-
-    int index = Mathf.FloorToInt(angle / sliceSize);
-
-    radialMenu.SelectedIndex = index;
-    radialMenu.QueueRedraw();
-}
-private void LateRadialFix()
-{
-    if (radialMenu == null) return;
-
-    radialMenu.Scale = new Vector2(
-        0.6f / Scale.X,
-        0.6f / Scale.Y
-    );
-}
-private void ApplyStats(float speed, float jump, float size)
-{
-    currentSpeed = speed;
-    currentJumpVelocity = jump;
-    currentSize = size;
-
-    Scale = new Vector2(currentSize, currentSize);
-}
-//Form 1 Abilities
-private void HandleBlitz()
-{
-    if (!Input.IsActionJustPressed("Player_Blitz"))
-        return;
-
-    if (currentForm != 1 || !isCharged)
-        return;
-
-    blitzDirection = new Vector2(facingDirection, 0);
-
-
-    isBlitzing = true;
-    blitzTimer = BlitzDuration;
-
-    SetCharged(false);
-
-    GD.Print("BLITZ!");
-}
-public void SetCharged(bool value)
-{
-    if (value && currentForm != 1)
-        return;
-
-    isCharged = value;
-
-    if (indicator == null)
-        return;
-
-    if (isCharged)
+    private void CloseTransformMenu()
     {
-        indicator.Visible = true;
-        indicator.Modulate = new Color(1, 1, 0); // yellow
+        isTransformMenuOpen = false;
+        Engine.TimeScale = 1f;
+        transformCircle.Visible = false;
     }
-    else
+
+    private int GetSelectedCreature()
     {
-        indicator.Visible = false;
-        indicator.Modulate = new Color(1, 1, 1); // white
+        Vector2 dir = (GetGlobalMousePosition() - GlobalPosition).Normalized();
+
+        float angle = Mathf.Atan2(dir.Y, dir.X);
+        if (angle < 0) angle += Mathf.Tau;
+
+        int count = knownCreatureList.Count;
+        float slice = Mathf.Tau / count;
+
+        return knownCreatureList[Mathf.FloorToInt(angle / slice)];
     }
 
-    GD.Print(value ? "Charged!" : "Discharged");
+    private void UpdateRadialSelection()
+    {
+        if (!isTransformMenuOpen) return;
+
+        Vector2 dir = (GetGlobalMousePosition() - GlobalPosition).Normalized();
+
+        float angle = Mathf.Atan2(dir.Y, dir.X);
+        if (angle < 0) angle += Mathf.Tau;
+
+        int count = knownCreatureList.Count;
+        float slice = Mathf.Tau / count;
+
+        radialMenu.SelectedIndex = Mathf.FloorToInt(angle / slice);
+        radialMenu.QueueRedraw();
+    }
+
+    private void FixRadialScale()
+    {
+        radialMenu.Scale = new Vector2(
+            0.6f / Scale.X,
+            0.6f / Scale.Y
+        );
+    }
 }
-    }
-

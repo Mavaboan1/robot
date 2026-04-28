@@ -7,7 +7,6 @@ public partial class Lightning : Area2D
     {
         if (body is Player player)
         {
-            player.SetCharged(true);
-        }
+            player.lightningForm.SetCharged(player, true);        }
     }
 }
