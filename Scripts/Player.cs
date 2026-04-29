@@ -5,11 +5,15 @@ using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D
 {
+    
     [Export] public float BaseSpeed = 200f;
     [Export] public float BaseJumpVelocity = -400f;
     [Export] public float BaseSize = 1f;
     [Export] public float Gravity = 900f;
+    [Export] public PackedScene BubblePlatformScene;
+    private BubblePlatform activeBubble;
 
+    private ProgressBar airBar;
     private Sprite2D playerSprite;
     private Sprite2D indicator;
     private Area2D scanArea;
@@ -43,9 +47,12 @@ public partial class Player : CharacterBody2D
         scanArea = GetNode<Area2D>("ScanArea");
         transformCircle = GetNode<Node2D>("TransformCircle");
         radialMenu = GetNode<RadialMenu>("TransformCircle");
+        airBar = GetNode<ProgressBar>("AirBar");
+
 
         radialMenu.Visible = false;
         indicator.Visible = false;
+        airBar.Visible = false;
 
         knownCreatures.Add(0);
         knownCreatureList.Add(0);
@@ -227,5 +234,40 @@ public partial class Player : CharacterBody2D
             0.6f / Scale.X,
             0.6f / Scale.Y
         );
+    }
+    public void SpawnBubblePlatform(Vector2 direction)
+{
+    if (BubblePlatformScene == null)
+    {
+        GD.Print("BubblePlatformScene is missing!");
+        return;
+    }
+
+    // Remove old bubble if it exists
+    if (activeBubble != null && IsInstanceValid(activeBubble))
+    {
+        activeBubble.QueueFree();
+    }
+
+    BubblePlatform bubble = BubblePlatformScene.Instantiate<BubblePlatform>();
+    GetParent().AddChild(bubble);
+
+    Vector2 spawnPos = GlobalPosition + direction * 80f;
+    bubble.GlobalPosition = spawnPos;
+
+    bubble.Initialize(direction);
+
+    activeBubble = bubble;
+}
+
+    public void SetAirBarVisible(bool visible)
+    {
+        airBar.Visible = visible;
+    }
+
+    public void SetAirBar(float value, float maxValue)
+    {
+        airBar.MaxValue = maxValue;
+        airBar.Value = value;
     }
 }

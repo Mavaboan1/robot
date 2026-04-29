@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://7c2f5yu20pkq"]
+
+[ext_resource type="Script" uid="uid://366voow2mwly" path="res://Scripts/BubblePlatform.cs" id="1_bbbda"]
+[ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_xmpe5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bbbda"]
+size = Vector2(28, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kl4m1"]
+size = Vector2(32, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ws4t2"]
+size = Vector2(32, 25)
+
+[node name="BubblePlatform" type="StaticBody2D" unique_id=1442681542]
+script = ExtResource("1_bbbda")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1808697085]
+texture = ExtResource("1_xmpe5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1427478439]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_bbbda")
+one_way_collision = true
+one_way_collision_margin = 15.7
+
+[node name="TopArea" type="Area2D" parent="." unique_id=1208682245]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopArea" unique_id=161594571]
+position = Vector2(0, -14.5)
+shape = SubResource("RectangleShape2D_kl4m1")
+
+[node name="SideArea" type="Area2D" parent="." unique_id=1032900577]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SideArea" unique_id=247167181]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_ws4t2")
