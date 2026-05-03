@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://cyju5ef6bfdvq"]
+
+[ext_resource type="Script" uid="uid://bd31ptwx6x21n" path="res://Scripts/LightningCreature.cs" id="1_fmdfj"]
+[ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_g6nir"]
+[ext_resource type="Script" uid="uid://byfch8wbrnqps" path="res://Scripts/StateMachine.cs" id="2_cbfhk"]
+[ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Objects/RoamingState.cs" id="3_cbfhk"]
+[ext_resource type="Script" uid="uid://b2sjx1ayim8l3" path="res://Objects/AttackState.cs" id="5_8hom3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fmdfj"]
+radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fmdfj"]
+size = Vector2(130, 20)
+
+[node name="LightningCreature" type="CharacterBody2D" unique_id=320818214 node_paths=PackedStringArray("stateMachine")]
+script = ExtResource("1_fmdfj")
+stateMachine = NodePath("FSM")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1189253160]
+texture = ExtResource("1_g6nir")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=829741994]
+shape = SubResource("CircleShape2D_fmdfj")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=647368002]
+visible = false
+
+[node name="FSM" type="Node2D" parent="." unique_id=85034034 node_paths=PackedStringArray("parent")]
+script = ExtResource("2_cbfhk")
+initialState = NodePath("Roaming")
+parent = NodePath("..")
+
+[node name="Roaming" type="Node2D" parent="FSM" unique_id=1083187024 node_paths=PackedStringArray("ledgeCheckLeft", "ledgeCheckRight")]
+script = ExtResource("3_cbfhk")
+speed = 100.0
+ledgeCheckLeft = NodePath("LedgeCheckLeft")
+ledgeCheckRight = NodePath("LedgeCheckRight")
+
+[node name="LedgeCheckLeft" type="RayCast2D" parent="FSM/Roaming" unique_id=675147116]
+position = Vector2(-19, 6)
+scale = Vector2(1.01, 1.01)
+target_position = Vector2(0, 41.58416)
+collision_mask = 3
+hit_from_inside = true
+
+[node name="LedgeCheckRight" type="RayCast2D" parent="FSM/Roaming" unique_id=1871000904]
+position = Vector2(20, 6)
+scale = Vector2(1.01, 1.01)
+target_position = Vector2(-0.99009895, 43.564354)
+collision_mask = 3
+
+[node name="Attack" type="Node2D" parent="FSM" unique_id=1534050337]
+script = ExtResource("5_8hom3")
+
+[node name="PlayerDetection" type="Area2D" parent="FSM/Attack" unique_id=1165987310]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FSM/Attack/PlayerDetection" unique_id=1219755955]
+position = Vector2(-3, 0)
+shape = SubResource("RectangleShape2D_fmdfj")
+
+[node name="Charge" type="Node2D" parent="FSM" unique_id=1587384303]
+
+[connection signal="body_entered" from="FSM/Attack/PlayerDetection" to="." method="_on_player_detection_body_entered"]

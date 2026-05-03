@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="1_x87qo"]
 [ext_resource type="PackedScene" uid="uid://c2avgpaxl4q1s" path="res://Objects/Lightning Creature Corpse.tscn" id="2_b6fju"]
+[ext_resource type="PackedScene" uid="uid://cyju5ef6bfdvq" path="res://Objects/lightning_creature.tscn" id="3_6h5vk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x87qo"]
 size = Vector2(1168, 20)
@@ -14,6 +15,8 @@ size = Vector2(1168, 20)
 position = Vector2(387, 397)
 
 [node name="Floor" type="StaticBody2D" parent="." unique_id=402104725]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor" unique_id=1732525276]
 position = Vector2(572, 427)
@@ -24,6 +27,21 @@ position = Vector2(573.9999, 427)
 scale = Vector2(1155.9999, 19.999994)
 mesh = SubResource("BoxMesh_x87qo")
 
+[node name="Floor2" type="StaticBody2D" parent="." unique_id=1365873523]
+position = Vector2(0, -122)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor2" unique_id=157430356]
+position = Vector2(572, 427)
+scale = Vector2(0.467432, 0.97535104)
+shape = SubResource("RectangleShape2D_x87qo")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Floor2" unique_id=1823018486]
+position = Vector2(573.9999, 427)
+scale = Vector2(540.35126, 19.507015)
+mesh = SubResource("BoxMesh_x87qo")
+
 [node name="LightningCreatureCorpse" parent="." unique_id=1817367004 instance=ExtResource("2_b6fju")]
 position = Vector2(602, 403)
 CreatureType = 1
@@ -31,3 +49,6 @@ CreatureType = 1
 [node name="LightningCreatureCorpse" parent="LightningCreatureCorpse" unique_id=623913075 instance=ExtResource("2_b6fju")]
 position = Vector2(-519, -11)
 CreatureType = 2
+
+[node name="LightningCreature" parent="." unique_id=846380548 instance=ExtResource("3_6h5vk")]
+position = Vector2(665, 266)
