@@ -10,7 +10,7 @@ public partial class BubblePlatform : StaticBody2D
     private bool launching = true;
     private bool playerOnTop = false;
     private Player player;
-
+    private Vector2 externalVelocity = Vector2.Zero;
     public override void _Ready()
     {
         Scale = new Vector2(0.2f, 0.2f);
@@ -29,6 +29,8 @@ public partial class BubblePlatform : StaticBody2D
         {
             GlobalPosition += moveDirection * LaunchSpeed * (float)delta;
         }
+        GlobalPosition += externalVelocity * (float)delta;
+        externalVelocity = externalVelocity.Lerp(Vector2.Zero, 0.05f);
 
         
     }
@@ -75,5 +77,9 @@ public partial class BubblePlatform : StaticBody2D
         CollisionShape2D solidCollision = GetNode<CollisionShape2D>("CollisionShape2D");
         solidCollision.SetDeferred("disabled", true);
         QueueFree();
+    }
+    public void Push(Vector2 direction, float force)
+    {
+        externalVelocity += direction.Normalized() * force;
     }
 }
