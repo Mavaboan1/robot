@@ -4,11 +4,14 @@ using System;
 public partial class RoamingState : State
 {
 
-    [Export] public float speed = 200f;    
-    [Export] public float gravity = 900f;
+    // [Export] public float speed = 200f;    
+    // [Export] public float gravity = 900f;
     [Export] public RayCast2D ledgeCheckLeft;
     [Export] public RayCast2D ledgeCheckRight;
     private bool playerDetected = false;
+
+    private LightningCreature _creature;
+
 
     private bool roaming;
     
@@ -17,6 +20,7 @@ public partial class RoamingState : State
 
     public override void Enter()
     {
+        _creature = parent as LightningCreature;
         roaming = true;
     }
 
@@ -30,9 +34,11 @@ public partial class RoamingState : State
         if (playerDetected)
         {
             fsm.TransitionTo("Attack");
-        }
+            }
         if (roaming)
             Move(delta);
+        
+
         
     }
 
@@ -43,7 +49,7 @@ public partial class RoamingState : State
 
         if (!parent.IsOnFloor())
         {
-            velocity.Y += gravity * (float)delta;
+            velocity.Y += _creature.gravity * (float)delta;
         }
 
         if (!isAtLedge)
@@ -51,9 +57,10 @@ public partial class RoamingState : State
             direction *= -1;
         }
 
-        velocity.X = direction * speed;
+        velocity.X = direction * _creature.speed;
         parent.Velocity = velocity;
 
+        
         parent.MoveAndSlide();
 
     }
@@ -64,6 +71,30 @@ public partial class RoamingState : State
         {
             playerDetected = true;
         }
+    }
+
+    private void OnNodeDetectAreaEntered(Area2D area)
+    {
+        GD.Print($"Collided with {area}");
+        if (area.IsInGroup("ElectroCharger"))
+        {
+            double halfCharge = _creature.maxElectroCharge * 0.5;
+            if (_creature.currentElectroCharge < (int)halfCharge)
+            {
+                fsm.TransitionTo("Charge");
+            }
+        }
+
+        if (area.IsInGroup("JumpRope") && area.HasMeta("chargeCost"))
+        {
+            var costMeta = area.GetMeta("ChargeCost");
+            if (_creature.currentElectroCharge > (int)costMeta)
+            {
+                fsm.TransitionTo("Jump");
+            }
+
+        }
+
     }
 
 
