@@ -6,6 +6,11 @@ public partial class LightningCreature : CharacterBody2D
 {
 
     [Export] public Node stateMachine;
+    [Export] public int speed = 100;
+    [Export] public int gravity = 900;
+
+    [Export] public int currentElectroCharge = 0;
+    [Export] public int maxElectroCharge = 100;
     /*
     [Export] public float speed = 200f;
     [Export] public float gravity = 900f;
@@ -14,6 +19,7 @@ public partial class LightningCreature : CharacterBody2D
 
     private int direction = 1;
     */
+
 
 
     public override void _Ready()
