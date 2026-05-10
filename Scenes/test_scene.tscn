@@ -840,22 +840,22 @@ maxElectroCharge = 100
 
 [node name="Detectables" type="Node2D" parent="." unique_id=1484541778]
 
-[node name="ElectroCharge" parent="Detectables" unique_id=1205819740 groups=["ElectroCharger"] instance=ExtResource("1_ak5v8")]
+[node name="ElectroCharge" parent="Detectables" unique_id=1205819740 instance=ExtResource("1_ak5v8")]
 position = Vector2(-2403, -133)
 
-[node name="ElectroCharge2" parent="Detectables" unique_id=108450338 groups=["ElectroCharger"] instance=ExtResource("1_ak5v8")]
+[node name="ElectroCharge2" parent="Detectables" unique_id=108450338 instance=ExtResource("1_ak5v8")]
 position = Vector2(4020, -1134)
 
-[node name="ElectroCharge4" parent="Detectables" unique_id=503574620 groups=["ElectroCharger"] instance=ExtResource("1_ak5v8")]
+[node name="ElectroCharge4" parent="Detectables" unique_id=503574620 instance=ExtResource("1_ak5v8")]
 position = Vector2(-894, -1689)
 
-[node name="ElectroCharge3" parent="Detectables" unique_id=1690582110 groups=["ElectroCharger"] instance=ExtResource("1_ak5v8")]
+[node name="ElectroCharge3" parent="Detectables" unique_id=1690582110 instance=ExtResource("1_ak5v8")]
 position = Vector2(9327, -157)
 
-[node name="JumpRope" parent="Detectables" unique_id=747130431 groups=["JumpRope"] instance=ExtResource("2_x033f")]
+[node name="JumpRope" parent="Detectables" unique_id=747130431 instance=ExtResource("2_x033f")]
 position = Vector2(1694, -658)
 
-[node name="JumpRope2" parent="Detectables" unique_id=1194983929 groups=["JumpRope"] instance=ExtResource("2_x033f")]
+[node name="JumpRope2" parent="Detectables" unique_id=1194983929 instance=ExtResource("2_x033f")]
 position = Vector2(247.00002, -1889)
 scale = Vector2(0.6003404, 0.6003404)
 

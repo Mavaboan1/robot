@@ -76,6 +76,7 @@ public partial class RoamingState : State
     private void OnNodeDetectAreaEntered(Area2D area)
     {
         GD.Print($"Collided with {area}");
+        GD.Print($"Group {area.GetGroups}");
         if (area.IsInGroup("ElectroCharger"))
         {
             double halfCharge = _creature.maxElectroCharge * 0.5;
@@ -95,6 +96,21 @@ public partial class RoamingState : State
 
         }
 
+    }
+
+    private void _on_node_detect_area_entered(Area2D area)
+    {
+        GD.Print("Area entered weird");
+    }
+
+    private void OnNodeDetectAreaShapeEntered(Area2D area)
+    {
+        GD.Print("Area Shape entered");
+    }
+
+    private void OnNodeDetectBodyEntered(Node2D body)
+    {
+        GD.Print("Body entered");
     }
 
 
