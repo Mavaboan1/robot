@@ -2,15 +2,15 @@ using Godot;
 
 public partial class LightningForm : Node
 {
-    public float Speed = 160f;
-    public float Jump = -480f;
-    public float Size = 1.2f;
+    public float Speed = 1600f;
+    public float Jump = -4800f;
+    public float Size = 12f;
     public Color FormColor = Colors.Blue;
     public bool IsCharged = false;
 
     public float SpeedMultiplier = 2f;
 
-    [Export] public float BlitzSpeed = 800f;
+    [Export] public float BlitzSpeed = 10000f;
     [Export] public float BlitzDuration = 0.18f;
 
     private bool isBlitzing = false;

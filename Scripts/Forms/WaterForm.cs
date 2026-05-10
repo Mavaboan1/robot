@@ -2,9 +2,9 @@ using Godot;
 
 public class WaterForm
 {
-    public float Speed = 400f;
-    public float Jump = -480f;
-    public float Size = 2f;
+    public float Speed = 2000f;
+    public float Jump = -4800f;
+    public float Size = 20f;
     public Color FormColor = Colors.Green;
     private float air = NormalMaxAir;
     private float maxAir = NormalMaxAir;
@@ -167,7 +167,7 @@ private void SpawnBubblePlatform(Player player, Vector2 direction)
 
     player.GetParent().AddChild(bubble);
 
-    Vector2 spawnPos = player.GlobalPosition + direction * 80f;
+    Vector2 spawnPos = player.GlobalPosition + direction * 800f;
     bubble.GlobalPosition = spawnPos;
 
     bubble.Initialize(direction);
@@ -185,7 +185,7 @@ private void HandleAirBlow(Player player)
     {
         Vector2 direction = (player.GetGlobalMousePosition() - player.GlobalPosition).Normalized();
 
-        activeAirGust.GlobalPosition = player.GlobalPosition + direction * 80f;
+        activeAirGust.GlobalPosition = player.GlobalPosition + direction * 800f;
         activeAirGust.UpdateDirection(direction);
     }
 
@@ -207,7 +207,7 @@ private void StartBlowingAir(Player player)
     AirGust gust = player.AirGustScene.Instantiate<AirGust>();
     player.GetParent().AddChild(gust);
 
-    gust.GlobalPosition = player.GlobalPosition + direction * 80f;
+    gust.GlobalPosition = player.GlobalPosition + direction * 800f;
     gust.UpdateDirection(direction);
 
     activeAirGust = gust;

@@ -2,7 +2,7 @@ using Godot;
 
 public partial class AirGust : Area2D
 {
-    [Export] public float PushForce = 500f;
+    [Export] public float PushForce = 5000f;
 
     private Vector2 direction = Vector2.Right;
 

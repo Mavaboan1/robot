@@ -7,6 +7,8 @@
 size = Vector2(163, 20)
 
 [node name="AirGust" type="Area2D" unique_id=590574878]
+position = Vector2(418.99997, 0)
+scale = Vector2(10, 10)
 script = ExtResource("1_4xwv0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=883735409]

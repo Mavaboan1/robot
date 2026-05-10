@@ -7,7 +7,7 @@ public partial class RadialMenu : Node2D
     public List<int> Options = new List<int>();
     public int SelectedIndex = -1;
 
-    [Export] public float Radius = 100f;
+    [Export] public float Radius = 1000f;
 
     public override void _Draw()
     {

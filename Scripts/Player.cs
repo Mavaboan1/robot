@@ -6,10 +6,10 @@ using System.Collections.Generic;
 public partial class Player : CharacterBody2D
 {
     
-    [Export] public float BaseSpeed = 200f;
-    [Export] public float BaseJumpVelocity = -400f;
-    [Export] public float BaseSize = 1f;
-    [Export] public float Gravity = 900f;
+    [Export] public float BaseSpeed = 2000f;
+    [Export] public float BaseJumpVelocity = -4000f;
+    [Export] public float BaseSize = 10f;
+    [Export] public float Gravity = 9000f;
     [Export] public PackedScene BubblePlatformScene;
     [Export] public PackedScene AirGustScene;
     

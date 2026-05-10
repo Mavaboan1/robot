@@ -2,9 +2,9 @@ using Godot;
 
 public partial class BubblePlatform : StaticBody2D
 {
-    [Export] public float LaunchSpeed = 180f;
+    [Export] public float LaunchSpeed = 1800f;
     [Export] public float LaunchTime = 0.25f;
-    [Export] public float FinalScale = 1f;
+    [Export] public float FinalScale = 10f;
 
     private Vector2 moveDirection = Vector2.Zero;
     private bool launching = true;
@@ -13,7 +13,7 @@ public partial class BubblePlatform : StaticBody2D
     private Vector2 externalVelocity = Vector2.Zero;
     public override void _Ready()
     {
-        Scale = new Vector2(0.2f, 0.2f);
+        Scale = new Vector2(2f, 2f);
 
         GetNode<Area2D>("TopArea").BodyEntered += OnTopEntered;
         GetNode<Area2D>("TopArea").BodyExited += OnTopExited;
@@ -74,6 +74,8 @@ public partial class BubblePlatform : StaticBody2D
 
     private void Pop()
     {
+        GD.Print("Pop");
+
         CollisionShape2D solidCollision = GetNode<CollisionShape2D>("CollisionShape2D");
         solidCollision.SetDeferred("disabled", true);
         QueueFree();
