@@ -11,6 +11,7 @@ script = ExtResource("1_nsnre")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1165267261]
 self_modulate = Color(0.8696799, 0.47574472, 0.28839132, 1)
+z_index = -1
 position = Vector2(-1, 1)
 texture = ExtResource("1_okimx")
 region_enabled = true

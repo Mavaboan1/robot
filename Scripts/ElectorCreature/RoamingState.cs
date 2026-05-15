@@ -1,32 +1,36 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class RoamingState : State
 {
 
-    // [Export] public float speed = 200f;    
-    // [Export] public float gravity = 900f;
     [Export] public RayCast2D ledgeCheckLeft;
     [Export] public RayCast2D ledgeCheckRight;
     private bool playerDetected = false;
 
     private LightningCreature _creature;
 
+    private Random rand;
 
     private bool roaming;
     
+    private bool inState;
 
     private int direction = -1;
 
     public override void Enter()
     {
         _creature = parent as LightningCreature;
+        GD.Print($"Entered Roaming with charge: {_creature.currentElectroCharge}");
         roaming = true;
+        rand = new Random();
     }
 
     public override void Exit()
     {
         roaming = false;
+        
     }
 
     public override void PhysicsUpdate(float delta)
@@ -75,45 +79,50 @@ public partial class RoamingState : State
 
     private void OnNodeDetectAreaEntered(Area2D area)
     {
-        GD.Print($"Collided with {area}");
-        GD.Print($"Group {area.GetGroups}");
-        if (area.IsInGroup("ElectroCharger"))
+        if (roaming)
         {
-            double halfCharge = _creature.maxElectroCharge * 0.5;
-            if (_creature.currentElectroCharge < (int)halfCharge)
+            if (area.IsInGroup("ElectroCharger"))
             {
-                fsm.TransitionTo("Charge");
+                double halfCharge = _creature.maxElectroCharge * 0.5;
+                double thisChance = rand.NextDouble();
+                if (_creature.currentElectroCharge <= (int)halfCharge)
+                {
+                    if (thisChance <= _creature.chargeChance)
+                    {
+                        GD.Print("TransistionPhase");
+                        fsm.TransitionTo("Charge");
+                    }
+                }
+            }
+
+            if (area.IsInGroup("JumpRope"))
+            {
+                JumpRope jumpRope = area as JumpRope;
+                _creature.currentJumpRope = jumpRope;
+                var jumpCost = jumpRope.jumpCost;
+                if (_creature.currentElectroCharge > jumpCost)
+                {
+                    double thisChance = rand.NextDouble();
+                    GD.Print($"Chance rolled: {thisChance}");
+                    if (thisChance <= _creature.jumpChance)
+                    {
+                        
+                        fsm.TransitionTo("Jump");
+                    }
+                }
             }
         }
 
-        if (area.IsInGroup("JumpRope") && area.HasMeta("chargeCost"))
+    }
+
+    private void OnNodeDetectAreaExited(Area2D area)
+    {
+        if (roaming)
         {
-            var costMeta = area.GetMeta("ChargeCost");
-            if (_creature.currentElectroCharge > (int)costMeta)
+            if (area.IsInGroup("JumpRope"))
             {
-                fsm.TransitionTo("Jump");
+                _creature.currentJumpRope = null;
             }
-
         }
-
     }
-
-    private void _on_node_detect_area_entered(Area2D area)
-    {
-        GD.Print("Area entered weird");
-    }
-
-    private void OnNodeDetectAreaShapeEntered(Area2D area)
-    {
-        GD.Print("Area Shape entered");
-    }
-
-    private void OnNodeDetectBodyEntered(Node2D body)
-    {
-        GD.Print("Body entered");
-    }
-
-
-
-
 }

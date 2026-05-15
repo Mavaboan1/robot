@@ -6,9 +6,13 @@
 [ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Scripts/ElectorCreature/RoamingState.cs" id="3_cbfhk"]
 [ext_resource type="Script" uid="uid://b2sjx1ayim8l3" path="res://Scripts/ElectorCreature/AttackState.cs" id="5_8hom3"]
 [ext_resource type="Script" uid="uid://c7q5185vnqrb1" path="res://Scripts/ElectorCreature/ChargeState.cs" id="6_yyooc"]
+[ext_resource type="Script" uid="uid://ky4ca1rp8hht" path="res://Objects/JumpState.cs" id="7_gv31x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fmdfj"]
 radius = 18.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gv31x"]
+radius = 17.857716
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hom3"]
 size = Vector2(91, 53)
@@ -16,7 +20,7 @@ size = Vector2(91, 53)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fmdfj"]
 size = Vector2(130, 20)
 
-[node name="LightningCreature" type="CharacterBody2D" unique_id=320818214 node_paths=PackedStringArray("stateMachine")]
+[node name="LightningCreature" type="CharacterBody2D" unique_id=320818214 node_paths=PackedStringArray("stateMachine") groups=["Enemy"]]
 scale = Vector2(7, 7)
 collision_layer = 5
 collision_mask = 5
@@ -29,6 +33,13 @@ texture = ExtResource("1_g6nir")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=829741994]
 shape = SubResource("CircleShape2D_fmdfj")
+
+[node name="HurtBox" type="Area2D" parent="." unique_id=1846598897]
+scale = Vector2(0.99999994, 0.99999994)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=126592336]
+shape = SubResource("CircleShape2D_gv31x")
+debug_color = Color(0.88783205, 0, 0.25305256, 0.41960785)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=647368002]
 visible = false
@@ -79,8 +90,9 @@ shape = SubResource("RectangleShape2D_fmdfj")
 script = ExtResource("6_yyooc")
 
 [node name="Jump" type="Node2D" parent="FSM" unique_id=562158151]
+script = ExtResource("7_gv31x")
 
+[connection signal="body_entered" from="HurtBox" to="." method="OnHurtBoxBodyEntered"]
 [connection signal="area_entered" from="FSM/Roaming/NodeDetect" to="FSM/Roaming" method="OnNodeDetectAreaEntered"]
-[connection signal="area_shape_entered" from="FSM/Roaming/NodeDetect" to="FSM/Roaming" method="_on_node_detect_area_shape_entered"]
-[connection signal="body_entered" from="FSM/Roaming/NodeDetect" to="FSM/Roaming" method="_on_node_detect_body_entered"]
+[connection signal="area_exited" from="FSM/Roaming/NodeDetect" to="FSM/Roaming" method="OnNodeDetectAreaExited"]
 [connection signal="body_entered" from="FSM/Attack/PlayerDetection" to="." method="_on_player_detection_body_entered"]

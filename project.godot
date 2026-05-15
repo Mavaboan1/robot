@@ -23,6 +23,7 @@ project/assembly_name="Robot"
 
 ElectroCharger=""
 JumpRope=""
+Enemy=""
 
 [input]
 
