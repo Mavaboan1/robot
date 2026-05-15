@@ -1,57 +1,43 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 public partial class LightningCreature : CharacterBody2D
 {
 
     [Export] public Node stateMachine;
+    [Export] public int maxHealt = 50;
+    [Export] public int currentHealt = 50;
+    [Export] public int damage = 10;
     [Export] public int speed = 100;
+    [Export] public int ropeSpeed = 600;
     [Export] public int gravity = 900;
 
     [Export] public int currentElectroCharge = 0;
     [Export] public int maxElectroCharge = 100;
-    /*
-    [Export] public float speed = 200f;
-    [Export] public float gravity = 900f;
-    [Export] public RayCast2D ledgeCheckLeft;
-    [Export] public RayCast2D ledgeCheckRight;
-
-    private int direction = 1;
-    */
+    [Export(PropertyHint.Range, "0,1,0.01")] public double jumpChance = 0.1f;
+    [Export(PropertyHint.Range, "0,1,0.01")] public double chargeChance = 0.1f;
 
 
+    [Export] public JumpRope currentJumpRope;
 
-    public override void _Ready()
+    public void TakeDamage(int damage)
     {
-        
+        currentHealt -= damage;
+        if (currentHealt <= 0)
+        {
+            QueueFree();
+        }
     }
 
-    public override void _PhysicsProcess(double delta)
-    {
-        /*
-        stateMachine._PhysicsProcess(delta);
-        Vector2 velocity = Velocity;
-        bool isAtLedge = ledgeCheckLeft.IsColliding() && ledgeCheckRight.IsColliding();
-
-        if (!IsOnFloor())
-        {
-            velocity.Y += gravity * (float)delta;
-        }
-
-        if (!isAtLedge)
-        {
-            direction *= -1;
-        }
-
-        velocity.X = direction * speed;
-        Velocity = velocity;
-
-        MoveAndSlide();
-        */
-    }
-
-
-
+    // public void OnHurtBoxBodyEntered(CharacterBody2D body)
+    // {
+    //     if (body.HasMethod("TakeDamage"))
+    //     {
+    //         Player player = body as Player;
+    //         player.TakeDamage(damage);
+    //     }
+    // }
 
 }

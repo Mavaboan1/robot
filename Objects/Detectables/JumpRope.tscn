@@ -1,25 +1,26 @@
 [gd_scene format=3 uid="uid://da4p7cv5fxuj4"]
 
+[ext_resource type="Script" uid="uid://bv4fo7uph2vhs" path="res://Objects/Detectables/JumpRope.cs" id="1_46rhd"]
 [ext_resource type="Texture2D" uid="uid://m1ecn16nh5h0" path="res://Images/tempAssets/Mossy Tileset/Mossy - Decorations&Hazards.png" id="1_djywh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_46rhd"]
 size = Vector2(240, 1497.5)
 
-[node name="JumpRope" type="Node2D" unique_id=747130431 groups=["JumpRope"]]
-z_index = -1
-
-[node name="Area2D" type="Area2D" parent="." unique_id=89730019]
+[node name="JumpRope" type="Area2D" unique_id=89730019 node_paths=PackedStringArray("jumpPoint") groups=["JumpRope"]]
 collision_layer = 4
 collision_mask = 0
+script = ExtResource("1_46rhd")
+jumpPoint = NodePath("JumpPoint")
 
-[node name="Sprite2D" type="Sprite2D" parent="Area2D" unique_id=1303889139]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1303889139]
+z_index = -1
 texture = ExtResource("1_djywh")
 region_enabled = true
 region_rect = Rect2(3721, 2547, 246, 1503)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1069756273]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1069756273]
 position = Vector2(4, -0.25)
 shape = SubResource("RectangleShape2D_46rhd")
 
-[node name="TopMark" type="Marker2D" parent="." unique_id=545781793]
+[node name="JumpPoint" type="Marker2D" parent="." unique_id=545781793]
 position = Vector2(-8, -682)

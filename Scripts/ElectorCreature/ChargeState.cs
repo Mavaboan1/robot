@@ -10,7 +10,7 @@ public partial class ChargeState : State
     public override void Enter()
     {
         _creature = parent as LightningCreature;
-        GD.Print($"Current Charge {_creature.currentElectroCharge}");
+        GD.Print($"Entered ChargeState with Current Charge {_creature.currentElectroCharge}");
     }
 
     public override void PhysicsUpdate(float delta)
