@@ -7,6 +7,7 @@
 size = Vector2(467, 437)
 
 [node name="ElectroCharge" type="Area2D" unique_id=1352508102 groups=["ElectroCharger"]]
+collision_layer = 5
 script = ExtResource("1_nsnre")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1165267261]

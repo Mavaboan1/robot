@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://ckaeaxg0llxp6" path="res://Images/tempAssets/Mossy Tileset/Mossy - TileSet.png" id="1_3dogw"]
 [ext_resource type="PackedScene" uid="uid://ctwqujuqq0uom" path="res://Objects/Detectables/ElectroCharge.tscn" id="1_ak5v8"]
 [ext_resource type="Texture2D" uid="uid://m1ecn16nh5h0" path="res://Images/tempAssets/Mossy Tileset/Mossy - Decorations&Hazards.png" id="1_hb2xm"]
-[ext_resource type="PackedScene" uid="uid://b8t3f6pm6hqac" path="res://Objects/LightningCreature.tscn" id="1_oho3u"]
+[ext_resource type="PackedScene" uid="uid://cwafhxun72lmt" path="res://Objects/LightningCreature.tscn" id="1_oho3u"]
 [ext_resource type="PackedScene" uid="uid://da4p7cv5fxuj4" path="res://Objects/Detectables/JumpRope.tscn" id="2_x033f"]
 [ext_resource type="Texture2D" uid="uid://ccn3dpe8n2b3k" path="res://Images/tempAssets/Mossy Tileset/Mossy - FloatingPlatforms.png" id="3_ak5v8"]
 [ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="7_rdbpf"]
@@ -836,6 +836,8 @@ zoom = Vector2(0.08, 0.08)
 
 [node name="LightningCreature" parent="." unique_id=320818214 instance=ExtResource("1_oho3u")]
 position = Vector2(1023, -260)
+ropeSpeed = 800
+maxElectroCharge = 100
 
 [node name="Detectables" type="Node2D" parent="." unique_id=1484541778]
 
@@ -876,17 +878,8 @@ tile_set = SubResource("TileSet_50ct6")
 [node name="Player" parent="." unique_id=474279547 instance=ExtResource("7_rdbpf")]
 position = Vector2(5563, -526)
 scale = Vector2(10, 10)
+AirGustScene = null
 
 [node name="WaterTrigger" parent="." unique_id=521973905 instance=ExtResource("8_oho3u")]
 position = Vector2(3563, 629)
 scale = Vector2(-18.900105, 7.0119514)
-
-[node name="Scannable Creature" parent="." unique_id=623913075]
-position = Vector2(8739, -60.000008)
-scale = Vector2(5, 5)
-CreatureType = 1
-
-[node name="Scannable Creature2" parent="." unique_id=1948674900]
-position = Vector2(2258.0002, 866)
-scale = Vector2(5, 5)
-CreatureType = 2

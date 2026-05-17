@@ -81,6 +81,7 @@ public partial class RoamingState : State
     {
         if (roaming)
         {
+            GD.Print("Collides with Area");
             if (area.IsInGroup("ElectroCharger"))
             {
                 double halfCharge = _creature.maxElectroCharge * 0.5;

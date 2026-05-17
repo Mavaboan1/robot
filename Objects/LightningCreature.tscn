@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b8t3f6pm6hqac"]
+[gd_scene format=3 uid="uid://cwafhxun72lmt"]
 
 [ext_resource type="Script" uid="uid://bd31ptwx6x21n" path="res://Scripts/ElectorCreature/LightningCreature.cs" id="1_fmdfj"]
 [ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_g6nir"]
@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Scripts/ElectorCreature/RoamingState.cs" id="3_cbfhk"]
 [ext_resource type="Script" uid="uid://b2sjx1ayim8l3" path="res://Scripts/ElectorCreature/AttackState.cs" id="5_8hom3"]
 [ext_resource type="Script" uid="uid://c7q5185vnqrb1" path="res://Scripts/ElectorCreature/ChargeState.cs" id="6_yyooc"]
-[ext_resource type="Script" path="res://Objects/JumpState.cs" id="7_gv31x"]
+[ext_resource type="Script" uid="uid://ky4ca1rp8hht" path="res://Objects/JumpState.cs" id="7_gv31x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fmdfj"]
 radius = 18.0
