@@ -2,7 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 
-public partial class JumpState : State
+public partial class LightningJumpState : State
 {
     
     private LightningCreature _creature;
@@ -22,12 +22,12 @@ public partial class JumpState : State
     {
         _phase = ClimbPhase.Align;
         _creature = parent as LightningCreature;
-        GD.Print($"Entered JumpState with charge: {_creature.currentElectroCharge}");
+        GD.Print($"Entered JumpState with charge: {_creature.currentCharge}");
         _jumpPoint = FindMarker(_creature.currentJumpRope);
         _targetPoint = FindMarker(FindTarget(_creature.currentJumpRope.jumpBody));
         _pointPos = _jumpPoint.GlobalPosition;
         _targetPos = _targetPoint.GlobalPosition;
-        _creature.currentElectroCharge -= _creature.currentJumpRope.jumpCost;
+        _creature.currentCharge -= _creature.currentJumpRope.jumpCost;
         _creature.currentJumpRope = null;
     }
 

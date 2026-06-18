@@ -5,25 +5,26 @@ public partial class ChargeState : State
 {
     [Export]
     public int chargeRate = 1;
+
     LightningCreature _creature;
 
     public override void Enter()
     {
         _creature = parent as LightningCreature;
-        GD.Print($"Entered ChargeState with Current Charge {_creature.currentElectroCharge}");
+        GD.Print($"Entered ChargeState with Current Charge {_creature.currentCharge}");
     }
 
     public override void PhysicsUpdate(float delta)
     {
-        if (_creature.currentElectroCharge <= _creature.maxElectroCharge)
+        if (_creature.currentCharge <= _creature.maxCharge)
         {
-            _creature.currentElectroCharge += chargeRate;
+            _creature.currentCharge += chargeRate;
         }
 
-        if (_creature.currentElectroCharge >= _creature.maxElectroCharge)
+        if (_creature.currentCharge >= _creature.maxCharge)
         {
-            _creature.currentElectroCharge = _creature.maxElectroCharge;
-            GD.Print($"End of Charge currently: {_creature.currentElectroCharge}");
+            _creature.currentCharge = _creature.maxCharge;
+            GD.Print($"End of Charge currently: {_creature.currentCharge}");
             fsm.TransitionTo("Roaming");
         }
     }

@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class RoamingState : State
+public partial class LightningRoamingState : State
 {
 
     [Export] public RayCast2D ledgeCheckLeft;
@@ -22,7 +22,7 @@ public partial class RoamingState : State
     public override void Enter()
     {
         _creature = parent as LightningCreature;
-        GD.Print($"Entered Roaming with charge: {_creature.currentElectroCharge}");
+        GD.Print($"Entered Roaming with charge: {_creature.currentCharge}");
         roaming = true;
         rand = new Random();
     }
@@ -81,12 +81,18 @@ public partial class RoamingState : State
     {
         if (roaming)
         {
+<<<<<<< Updated upstream:Scripts/ElectorCreature/RoamingState.cs
             if (area.IsInGroup("ElectroCharger"))
+=======
+            GD.Print("Collides with Area");
+            if (area.IsInGroup(_creature.typeCharger))
+>>>>>>> Stashed changes:Scripts/ElectorCreature/LightningRoamingState.cs
             {
-                double halfCharge = _creature.maxElectroCharge * 0.5;
+                double halfCharge = _creature.maxCharge * 0.5;
                 double thisChance = rand.NextDouble();
-                if (_creature.currentElectroCharge <= (int)halfCharge)
+                if (_creature.currentCharge <= (int)halfCharge)
                 {
+                    GD.Print($"Chance rolled: {thisChance}");
                     if (thisChance <= _creature.chargeChance)
                     {
                         GD.Print("TransistionPhase");
@@ -100,7 +106,7 @@ public partial class RoamingState : State
                 JumpRope jumpRope = area as JumpRope;
                 _creature.currentJumpRope = jumpRope;
                 var jumpCost = jumpRope.jumpCost;
-                if (_creature.currentElectroCharge > jumpCost)
+                if (_creature.currentCharge > jumpCost)
                 {
                     double thisChance = rand.NextDouble();
                     GD.Print($"Chance rolled: {thisChance}");
