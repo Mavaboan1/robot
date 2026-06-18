@@ -1,12 +1,12 @@
-[gd_scene format=3 uid="uid://5or3wh6btvfh"]
+[gd_scene format=3 uid="uid://cwafhxun72lmt"]
 
 [ext_resource type="Script" uid="uid://bd31ptwx6x21n" path="res://Scripts/ElectorCreature/LightningCreature.cs" id="1_fmdfj"]
 [ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_g6nir"]
 [ext_resource type="Script" uid="uid://byfch8wbrnqps" path="res://Scripts/StateMachine.cs" id="2_cbfhk"]
-[ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Scripts/ElectorCreature/LightningRoamingState.cs" id="3_cbfhk"]
+[ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Scripts/ElectorCreature/RoamingState.cs" id="3_cbfhk"]
 [ext_resource type="Script" uid="uid://b2sjx1ayim8l3" path="res://Scripts/ElectorCreature/AttackState.cs" id="5_8hom3"]
 [ext_resource type="Script" uid="uid://c7q5185vnqrb1" path="res://Scripts/ElectorCreature/ChargeState.cs" id="6_yyooc"]
-[ext_resource type="Script" uid="uid://ky4ca1rp8hht" path="res://Scripts/ElectorCreature/LightningJumpState.cs" id="7_gv31x"]
+[ext_resource type="Script" uid="uid://ky4ca1rp8hht" path="res://Objects/JumpState.cs" id="7_gv31x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fmdfj"]
 radius = 18.0
@@ -25,16 +25,11 @@ scale = Vector2(7, 7)
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_fmdfj")
-<<<<<<< Updated upstream:Objects/lightning_creature.tscn
 stateMachine = NodePath("FSM")
-maxElectroCharge = 400
-=======
-jumpChance = 0.2
-stateMachine = NodePath("FSM")
-creatureType = 1
 speed = 400
+maxElectroCharge = 400
+jumpChance = 0.2
 chargeChance = 0.5
->>>>>>> Stashed changes:Objects/LightningCreature.tscn
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1189253160]
 texture = ExtResource("1_g6nir")

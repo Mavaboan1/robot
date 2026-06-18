@@ -3,9 +3,9 @@ using Godot;
 
 public partial class ScanForm : Node
 {
-    public float Speed = 200f;
-    public float Jump = -400f;
-    public float Size = 1f;
+    public float Speed = 2000f;
+    public float Jump = -4000f;
+    public float Size = 10f;
     public Color FormColor = Colors.White;
     public void Update(Player player, double delta)
     {

@@ -6,12 +6,13 @@ using System.Collections.Generic;
 public partial class Player : CharacterBody2D
 {
     
-    [Export] public float BaseSpeed = 200f;
-    [Export] public float BaseJumpVelocity = -400f;
-    [Export] public float BaseSize = 1f;
-    [Export] public float Gravity = 900f;
+    [Export] public float BaseSpeed = 2000f;
+    [Export] public float BaseJumpVelocity = -4000f;
+    [Export] public float BaseSize = 10f;
+    [Export] public float Gravity = 9000f;
     [Export] public PackedScene BubblePlatformScene;
-    private BubblePlatform activeBubble;
+    [Export] public PackedScene AirGustScene;
+    
 
     private ProgressBar airBar;
     private Sprite2D playerSprite;
@@ -235,30 +236,7 @@ public partial class Player : CharacterBody2D
             0.6f / Scale.Y
         );
     }
-    public void SpawnBubblePlatform(Vector2 direction)
-{
-    if (BubblePlatformScene == null)
-    {
-        GD.Print("BubblePlatformScene is missing!");
-        return;
-    }
 
-    // Remove old bubble if it exists
-    if (activeBubble != null && IsInstanceValid(activeBubble))
-    {
-        activeBubble.QueueFree();
-    }
-
-    BubblePlatform bubble = BubblePlatformScene.Instantiate<BubblePlatform>();
-    GetParent().AddChild(bubble);
-
-    Vector2 spawnPos = GlobalPosition + direction * 80f;
-    bubble.GlobalPosition = spawnPos;
-
-    bubble.Initialize(direction);
-
-    activeBubble = bubble;
-}
 
     public void SetAirBarVisible(bool visible)
     {

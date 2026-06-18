@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://c5qgttfby7833"]
+
+[ext_resource type="Script" uid="uid://bk6uwisa2wex7" path="res://Scripts/AirGust.cs" id="1_4xwv0"]
+[ext_resource type="Texture2D" uid="uid://f77lioximtco" path="res://Images/crystalabsolutewhite600x500.jpg" id="2_a33cj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u2e42"]
+size = Vector2(163, 20)
+
+[node name="AirGust" type="Area2D" unique_id=590574878]
+position = Vector2(418.99997, 0)
+scale = Vector2(10, 10)
+script = ExtResource("1_4xwv0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=883735409]
+position = Vector2(13.5, 0)
+scale = Vector2(1.067985, 1.2074852)
+shape = SubResource("RectangleShape2D_u2e42")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=915952795]
+position = Vector2(14.500008, 0)
+scale = Vector2(0.6070176, 0.092826985)
+texture = ExtResource("2_a33cj")

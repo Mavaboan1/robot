@@ -59,6 +59,7 @@ Objects/
  Detectables/JumpRope.cs
  JumpState.cs
 Scripts/
+ AirGust.cs
  BubblePlatform.cs
  ElectorCreature/
   AttackState.cs

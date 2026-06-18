@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://h3p3hnhneg0u" path="res://Scripts/Player.cs" id="1_8r7yd"]
 [ext_resource type="PackedScene" uid="uid://7c2f5yu20pkq" path="res://Scenes/BubblePlatform.tscn" id="2_u60sl"]
 [ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="2_yk4ok"]
+[ext_resource type="PackedScene" uid="uid://c5qgttfby7833" path="res://Scenes/AirGust.tscn" id="3_t1tke"]
 [ext_resource type="Script" uid="uid://bs5wsp6g0j7u6" path="res://Scripts/RadialMenu.cs" id="3_yk4ok"]
 [ext_resource type="Texture2D" uid="uid://buedkj5qq32k8" path="res://Images/pngimg.com - circle_PNG63.png" id="4_gijnf"]
 
@@ -14,6 +15,7 @@ radius = 82.50152
 [node name="Player" type="CharacterBody2D" unique_id=474279547]
 script = ExtResource("1_8r7yd")
 BubblePlatformScene = ExtResource("2_u60sl")
+AirGustScene = ExtResource("3_t1tke")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=54145823]
 shape = SubResource("CircleShape2D_4ajx2")

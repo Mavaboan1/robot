@@ -2,9 +2,9 @@ using Godot;
 
 public class WaterForm
 {
-    public float Speed = 400f;
-    public float Jump = -480f;
-    public float Size = 2f;
+    public float Speed = 2000f;
+    public float Jump = -4800f;
+    public float Size = 20f;
     public Color FormColor = Colors.Green;
     private float air = NormalMaxAir;
     private float maxAir = NormalMaxAir;
@@ -14,6 +14,7 @@ public class WaterForm
     private const float AirDrainSpeed = 10f;
     private const float AirRefillSpeed = 10f;
     private BubblePlatform activeBubble;
+    private AirGust activeAirGust;
     public enum WaterState
 {
     Empty,
@@ -35,6 +36,7 @@ private bool isInWater = false;
 {
     if (!Input.IsActionJustPressed("Player_Ability1"))
         return;
+        
 
     if (CurrentState != WaterState.Empty)
         return;
@@ -67,6 +69,12 @@ public void ResetState(Player player)
     CurrentState = WaterState.Empty;
     maxAir = NormalMaxAir;
     air = Mathf.Min(air, maxAir);
+    if (activeAirGust != null && GodotObject.IsInstanceValid(activeAirGust))
+{
+    activeAirGust.QueueFree();
+}
+
+activeAirGust = null;
     player.SetAirBarVisible(false);
 
     player.SetIndicator(false, Colors.White);
@@ -120,6 +128,14 @@ public void ExitWater(Player player)
 }
 private void HandleBubbleAbility(Player player)
 {
+    // Holding second fire with AIR stored
+    if (CurrentState == WaterState.Air)
+    {
+        HandleAirBlow(player);
+        return;
+    }
+
+    // Bubble creation with WATER stored
     if (!Input.IsActionJustPressed("Player_SecondFire"))
         return;
 
@@ -129,7 +145,7 @@ private void HandleBubbleAbility(Player player)
     Vector2 direction = (player.GetGlobalMousePosition() - player.GlobalPosition).Normalized();
 
     SpawnBubblePlatform(player, direction);
-    // consume stored water
+
     CurrentState = WaterState.Empty;
     player.SetIndicator(false, Colors.White);
 }
@@ -151,11 +167,66 @@ private void SpawnBubblePlatform(Player player, Vector2 direction)
 
     player.GetParent().AddChild(bubble);
 
-    Vector2 spawnPos = player.GlobalPosition + direction * 80f;
+    Vector2 spawnPos = player.GlobalPosition + direction * 800f;
     bubble.GlobalPosition = spawnPos;
 
     bubble.Initialize(direction);
 
     activeBubble = bubble;
+}
+private void HandleAirBlow(Player player)
+{
+    if (Input.IsActionJustPressed("Player_SecondFire"))
+    {
+        StartBlowingAir(player);
+    }
+
+    if (Input.IsActionPressed("Player_SecondFire") && activeAirGust != null)
+    {
+        Vector2 direction = (player.GetGlobalMousePosition() - player.GlobalPosition).Normalized();
+
+        activeAirGust.GlobalPosition = player.GlobalPosition + direction * 800f;
+        activeAirGust.UpdateDirection(direction);
+    }
+
+    if (Input.IsActionJustReleased("Player_SecondFire"))
+    {
+        StopBlowingAir(player);
+    }
+}
+private void StartBlowingAir(Player player)
+{
+    if (player.AirGustScene == null)
+    {
+        GD.Print("AirGustScene missing!");
+        return;
+    }
+
+    Vector2 direction = (player.GetGlobalMousePosition() - player.GlobalPosition).Normalized();
+
+    AirGust gust = player.AirGustScene.Instantiate<AirGust>();
+    player.GetParent().AddChild(gust);
+
+    gust.GlobalPosition = player.GlobalPosition + direction * 800f;
+    gust.UpdateDirection(direction);
+
+    activeAirGust = gust;
+
+    GD.Print("Started blowing air");
+}
+
+private void StopBlowingAir(Player player)
+{
+    if (activeAirGust != null && GodotObject.IsInstanceValid(activeAirGust))
+    {
+        activeAirGust.QueueFree();
+    }
+
+    activeAirGust = null;
+
+    CurrentState = WaterState.Empty;
+    player.SetIndicator(false, Colors.White);
+
+    GD.Print("Stopped blowing air");
 }
 }

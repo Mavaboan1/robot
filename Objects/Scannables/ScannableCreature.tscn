@@ -11,7 +11,7 @@ albedo_color = Color(0, 0.4413202, 0.94313645, 1)
 [sub_resource type="SphereMesh" id="SphereMesh_qai5k"]
 material = SubResource("StandardMaterial3D_4swkm")
 
-[node name="LightningCreatureCorpse" type="StaticBody2D" unique_id=623913075 groups=["Scannable"]]
+[node name="Scannable Creature" type="StaticBody2D" unique_id=623913075 groups=["Scannable"]]
 script = ExtResource("1_qai5k")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1274478550]
