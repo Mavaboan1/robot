@@ -9,7 +9,7 @@ public partial class WaterTrigger : Area2D
         {
             if (player.CurrentForm != FormType.Water)
             {
-                GD.Print("You Cannot Swim");
+                player.SetInWater(true);
                 return;
             }
             player.waterForm.EnterWater(player);
@@ -18,11 +18,15 @@ public partial class WaterTrigger : Area2D
 
     private void _on_body_exited(Node body)
     {
-                GD.Print("sss");
 
         if (body is Player player)
         {
-            player.waterForm.ExitWater(player);
+           if (player.CurrentForm != FormType.Water)
+            {
+                player.SetInWater(false);
+                return;
+            }
+           player.waterForm.ExitWater(player);
 
         }
     }

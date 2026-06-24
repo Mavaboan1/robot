@@ -12,8 +12,12 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_8r7yd"]
 radius = 82.50152
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t1tke"]
+size = Vector2(29, 20)
+
 [node name="Player" type="CharacterBody2D" unique_id=474279547]
 script = ExtResource("1_8r7yd")
+CoyoteTime = 0.25
 BubblePlatformScene = ExtResource("2_u60sl")
 AirGustScene = ExtResource("3_t1tke")
 
@@ -29,6 +33,7 @@ texture = ExtResource("2_yk4ok")
 [node name="ScanArea" type="Area2D" parent="." unique_id=265861329]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScanArea" unique_id=850814515]
+position = Vector2(-1, 1)
 shape = SubResource("CircleShape2D_8r7yd")
 
 [node name="ScanPulse" type="Sprite2D" parent="." unique_id=491946283]
@@ -56,3 +61,25 @@ offset_right = 17.0
 offset_bottom = -10.0
 value = 50.0
 show_percentage = false
+
+[node name="Healthbar" type="ProgressBar" parent="." unique_id=2140481298]
+modulate = Color(1, 0, 0, 1)
+offset_left = -18.0
+offset_top = -24.0
+offset_right = 16.0
+offset_bottom = -20.0
+step = 1.0
+value = 50.0
+show_percentage = false
+
+[node name="ElectricAttack" type="Area2D" parent="." unique_id=508287467]
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ElectricAttack" unique_id=2114937071]
+position = Vector2(26, 0)
+shape = SubResource("RectangleShape2D_t1tke")
+
+[node name="AttackVisual" type="Sprite2D" parent="ElectricAttack" unique_id=681663796]
+position = Vector2(27, 0)
+scale = Vector2(0.90625, 0.4375)
+texture = ExtResource("2_yk4ok")
