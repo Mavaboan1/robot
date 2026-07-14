@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://hiqolm5gpjep"]
+
+[ext_resource type="PackedScene" uid="uid://d6dp35v15yab" path="res://Scenes/test-tilemap-layer.tscn" id="1_nse06"]
+[ext_resource type="PackedScene" uid="uid://bbqmiuiy8pui6" path="res://Objects/TestObjects/ZoneLoadArea.tscn" id="2_12oqq"]
+[ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="5_12oqq"]
+
+[node name="Loadtest1" type="Node2D" unique_id=411424810]
+
+[node name="TileMapLayer" parent="." unique_id=1927730750 instance=ExtResource("1_nse06")]
+
+[node name="Player" parent="." unique_id=474279547 groups=["player"] instance=ExtResource("5_12oqq")]
+position = Vector2(-1230, -184)
+scale = Vector2(12.972921, 12.972921)
+
+[node name="LoadZones" type="Node2D" parent="." unique_id=673869314]
+
+[node name="ZoneLoadArea2" parent="LoadZones" unique_id=1559134233 instance=ExtResource("2_12oqq")]
+position = Vector2(11142, -832)
+scale = Vector2(17.642519, 7.7884226)
+SceneToLoad = "uid://wrn0k4pgn2w3"
+
+[node name="ZoneLoadArea" parent="LoadZones" unique_id=1941067890 instance=ExtResource("2_12oqq")]
+position = Vector2(-2860, -789)
+scale = Vector2(17.642519, 7.7884226)
+SceneToLoad = "uid://c2ustoudvlffb"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1059995858]
+position = Vector2(3918, -1872)
+zoom = Vector2(0.08, 0.08)

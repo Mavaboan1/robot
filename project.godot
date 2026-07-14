@@ -17,7 +17,7 @@ config/icon="res://Images/icon.svg"
 
 [autoload]
 
-GameManager="*uid://bh0cwk78r3agn"
+SceneManager="*uid://bh0cwk78r3agn"
 
 [dotnet]
 
@@ -28,6 +28,7 @@ project/assembly_name="Robot"
 ElectroCharger="Type of Charger"
 JumpRope=""
 Enemy=""
+player=""
 
 [input]
 

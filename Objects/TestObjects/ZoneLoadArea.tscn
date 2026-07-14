@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://bbqmiuiy8pui6"]
+
+[ext_resource type="Script" uid="uid://fmbi0i62eo2n" path="res://Objects/TestObjects/ZoneLoadArea.cs" id="1_03agr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_otgex"]
+size = Vector2(80, 270)
+
+[node name="ZoneLoadArea" type="Area2D" unique_id=1941067890]
+script = ExtResource("1_03agr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1214635045]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_otgex")

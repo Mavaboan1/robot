@@ -22,7 +22,7 @@ public partial class RoamingState : State
     public override void Enter()
     {
         _creature = parent as LightningCreature;
-        GD.Print($"Entered Roaming with charge: {_creature.currentElectroCharge}");
+        GD.Print($"Entered Roaming with charge: {_creature.currentCharge}");
         roaming = true;
         rand = new Random();
     }
@@ -84,9 +84,9 @@ public partial class RoamingState : State
             GD.Print("Collides with Area");
             if (area.IsInGroup("ElectroCharger"))
             {
-                double halfCharge = _creature.maxElectroCharge * 0.5;
+                double halfCharge = _creature.maxCharge * 0.5;
                 double thisChance = rand.NextDouble();
-                if (_creature.currentElectroCharge <= (int)halfCharge)
+                if (_creature.currentCharge <= (int)halfCharge)
                 {
                     if (thisChance <= _creature.chargeChance)
                     {
@@ -101,7 +101,7 @@ public partial class RoamingState : State
                 JumpRope jumpRope = area as JumpRope;
                 _creature.currentJumpRope = jumpRope;
                 var jumpCost = jumpRope.jumpCost;
-                if (_creature.currentElectroCharge > jumpCost)
+                if (_creature.currentCharge > jumpCost)
                 {
                     double thisChance = rand.NextDouble();
                     GD.Print($"Chance rolled: {thisChance}");
