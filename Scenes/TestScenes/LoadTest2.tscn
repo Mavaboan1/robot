@@ -1,3 +1,22 @@
 [gd_scene format=3 uid="uid://c2ustoudvlffb"]
 
+[ext_resource type="PackedScene" uid="uid://d6dp35v15yab" path="res://Scenes/test-tilemap-layer.tscn" id="1_eypek"]
+[ext_resource type="PackedScene" uid="uid://bbqmiuiy8pui6" path="res://Objects/TestObjects/ZoneLoadArea.tscn" id="2_4or1r"]
+
 [node name="LoadTest2" type="Node2D" unique_id=1165106325]
+
+[node name="TileMapLayer" parent="." unique_id=1927730750 instance=ExtResource("1_eypek")]
+
+[node name="LoadZones" type="Node2D" parent="." unique_id=1149837531]
+
+[node name="ZoneLoadArea" parent="LoadZones" unique_id=1941067890 instance=ExtResource("2_4or1r")]
+position = Vector2(-3438, -46)
+scale = Vector2(5.7999988, 14.040001)
+SceneToLoad = "uid://hiqolm5gpjep"
+
+[node name="Marker2D" type="Marker2D" parent="LoadZones/ZoneLoadArea" unique_id=1471640807]
+position = Vector2(33.965523, -1.068376)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=147940067]
+position = Vector2(3918, -1872)
+zoom = Vector2(0.08, 0.08)
