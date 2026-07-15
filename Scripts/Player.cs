@@ -359,6 +359,7 @@ public partial class Player : CharacterBody2D
     }
     public void AttackHitbox(int damage)
 {
+    UpdateAttackDirection();
     ElectricAttack.Monitoring = true;
         ElectricAttackVisual.Visible = true;
 
@@ -376,5 +377,15 @@ public partial class Player : CharacterBody2D
 public void HideAttackVisual()
 {
     ElectricAttackVisual.Visible = false;
+}
+private void UpdateAttackDirection()
+{
+    int direction = GetFacingDirection();
+
+    // Mirror the entire attack Area2D.
+    ElectricAttack.Scale = new Vector2(
+        Mathf.Abs(ElectricAttack.Scale.X) * direction,
+        ElectricAttack.Scale.Y
+    );
 }
 }
