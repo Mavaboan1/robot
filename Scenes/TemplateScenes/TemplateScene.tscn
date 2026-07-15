@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bi0qyrc4qjvol"]
 
-[ext_resource type="TileSet" uid="uid://pyavpvfqhi25" path="res://Test_Tile_Set.tres" id="1_fefva"]
+[ext_resource type="TileSet" uid="uid://pyavpvfqhi25" path="res://Scenes/TemplateScenes/Test_Tile_Set.tres" id="1_fefva"]
 
 [node name="TemplateScene" type="Node2D" unique_id=2022557090]
 
