@@ -2,7 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://d6dp35v15yab" path="res://Scenes/test-tilemap-layer.tscn" id="1_ov1ec"]
 [ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="2_gse8g"]
-[ext_resource type="PackedScene" uid="uid://bbqmiuiy8pui6" path="res://Objects/TestObjects/ZoneLoadArea.tscn" id="3_t1yl5"]
+[ext_resource type="PackedScene" uid="uid://bbqmiuiy8pui6" path="res://Scenes/TemplateScenes/ZoneLoadArea.tscn" id="3_t1yl5"]
+[ext_resource type="PackedScene" uid="uid://xednpkp8txca" path="res://Scenes/TemplateScenes/SpawnPoint.tscn" id="4_gse8g"]
 
 [node name="LoadTest1" type="Node2D" unique_id=411424810]
 
@@ -19,10 +20,17 @@ position = Vector2(11142, -832)
 scale = Vector2(17.642519, 7.7884226)
 SceneToLoad = "uid://wrn0k4pgn2w3"
 
+[node name="SpawnPoint" parent="LoadZones/ZoneLoadArea2" unique_id=637198260 instance=ExtResource("4_gse8g")]
+SpawnId = "test3"
+
 [node name="ZoneLoadArea" parent="LoadZones" unique_id=1941067890 instance=ExtResource("3_t1yl5")]
 position = Vector2(-2860, -789)
 scale = Vector2(17.642519, 7.7884226)
 SceneToLoad = "uid://c2ustoudvlffb"
+TargetZoneId = "test2"
+
+[node name="SpawnPoint" parent="LoadZones/ZoneLoadArea" unique_id=177589703 instance=ExtResource("4_gse8g")]
+SpawnId = "test1"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1059995858]
 position = Vector2(3918, -1872)

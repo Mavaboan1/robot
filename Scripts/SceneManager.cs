@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public partial class SceneManager : Node
 {
+    // SceneState, idle currently not used as nothing gets done while idle
     private enum _sceneState
     {
         idle,
@@ -11,12 +12,13 @@ public partial class SceneManager : Node
         getScenes
     }
 
+    // Controlls state machine
     private _sceneState _currentSceneState = _sceneState.idle;
-
-    private Player _player;
 
     public Node currentScene;
     public Node oldScene = null;
+
+    // LoadZones and OldLoadZones used to compare if connection from other zones in previous scene
     private List<ZoneLoadArea> _loadZones = new List<ZoneLoadArea>();
     private List<ZoneLoadArea> _oldLoadZones = new List<ZoneLoadArea>();
     private string sceneToLoad = null;
@@ -27,8 +29,8 @@ public partial class SceneManager : Node
     {
         GetLoadZones();
         PrepNextScene();
-        GD.Print("We should not be here twice");
-        _player = currentScene.GetNode<CharacterBody2D>("Player") as Player;
+        // GD.Print("We should not be here twice");
+        // _player = currentScene.GetNode<CharacterBody2D>("Player") as Player;
 
         PrintSceneInfo();
         
@@ -36,6 +38,7 @@ public partial class SceneManager : Node
 
     public override void _Process(double delta)
     {
+        // StateMachine
         switch (_currentSceneState)
         {
             case _sceneState.loadScene:
@@ -56,6 +59,7 @@ public partial class SceneManager : Node
     }
 
 
+    // Adds LoadZones to list if empty, otherwise add to a templist that swap with loadzones and loadzones with oldLoadZones
     private void GetLoadZones()
     {
         Viewport root = GetTree().Root;
@@ -84,15 +88,13 @@ public partial class SceneManager : Node
         }
         if (!loadZonesIsEmpty)
         {
-            // _oldLoadZones = _loadZones;
-            // _loadZones = tempList;
             (_oldLoadZones, _loadZones) = (_loadZones, tempList);
             return;
         }
         return;
     }
 
-    // Not working as intended TODO
+    // Preloads every scene in _loadZones and clears up thread for scenes that should no longer be loaded.
     private void PrepNextScene()
     {
         foreach (ZoneLoadArea zone in _loadZones)
@@ -112,6 +114,7 @@ public partial class SceneManager : Node
         }
     }
 
+    // Might need to add .CallDeferred, will be seen in testing if needed.
     private void GoToScene()
     {
         oldScene = currentScene;
@@ -135,6 +138,8 @@ public partial class SceneManager : Node
 
     }
 
+    // Helper function to show helpfull information. More should be added as needed.
+    // Need to add way to turn off when not needed.
     private void PrintSceneInfo()
     {
         GD.Print("========================");

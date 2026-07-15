@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://c2ustoudvlffb"]
 
 [ext_resource type="PackedScene" uid="uid://d6dp35v15yab" path="res://Scenes/test-tilemap-layer.tscn" id="1_eypek"]
-[ext_resource type="PackedScene" uid="uid://bbqmiuiy8pui6" path="res://Objects/TestObjects/ZoneLoadArea.tscn" id="2_4or1r"]
+[ext_resource type="TileSet" uid="uid://pyavpvfqhi25" path="res://Test_Tile_Set.tres" id="2_0n8er"]
+[ext_resource type="PackedScene" uid="uid://bbqmiuiy8pui6" path="res://Scenes/TemplateScenes/ZoneLoadArea.tscn" id="2_4or1r"]
+[ext_resource type="PackedScene" uid="uid://xednpkp8txca" path="res://Scenes/TemplateScenes/SpawnPoint.tscn" id="4_0n8er"]
 
 [node name="LoadTest2" type="Node2D" unique_id=1165106325]
 
 [node name="TileMapLayer" parent="." unique_id=1927730750 instance=ExtResource("1_eypek")]
+tile_set = ExtResource("2_0n8er")
 
 [node name="LoadZones" type="Node2D" parent="." unique_id=1149837531]
 
@@ -13,9 +16,11 @@
 position = Vector2(-3438, -46)
 scale = Vector2(5.7999988, 14.040001)
 SceneToLoad = "uid://hiqolm5gpjep"
+TargetZoneId = "test1"
 
-[node name="Marker2D" type="Marker2D" parent="LoadZones/ZoneLoadArea" unique_id=1471640807]
-position = Vector2(33.965523, -1.068376)
+[node name="SpawnPoint" parent="LoadZones/ZoneLoadArea" unique_id=637198260 instance=ExtResource("4_0n8er")]
+position = Vector2(22.241385, -1.9230766)
+SpawnId = "test2"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=147940067]
 position = Vector2(3918, -1872)

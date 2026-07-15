@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://xednpkp8txca"]
+
+[ext_resource type="Script" uid="uid://c0mg1r28se8te" path="res://Scenes/TemplateScenes/SpawnPoint.cs" id="1_srh6o"]
+
+[node name="SpawnPoint" type="Marker2D" unique_id=637198260]
+script = ExtResource("1_srh6o")

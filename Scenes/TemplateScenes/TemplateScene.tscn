@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bi0qyrc4qjvol"]
+
+[ext_resource type="TileSet" uid="uid://pyavpvfqhi25" path="res://Test_Tile_Set.tres" id="1_fefva"]
+
+[node name="TemplateScene" type="Node2D" unique_id=2022557090]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=762343425]
+tile_set = ExtResource("1_fefva")
+
+[node name="LoadZones" type="Node2D" parent="." unique_id=1400625987]
