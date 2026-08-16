@@ -2,7 +2,11 @@ using Godot;
 using Godot.Collections;
 using System;
 
-public partial class JumpState : State
+/// <summary>
+/// Jumpstate jumps creature from one pilon to the connected one.
+/// Should only be called in an fsm
+/// </summary>
+public partial class LightningJumpState : State
 {
     
     private LightningCreature _creature;
@@ -20,17 +24,19 @@ public partial class JumpState : State
 
     public override void Enter()
     {
+        // Setup when entering jumpState
         _phase = ClimbPhase.Align;
         _creature = parent as LightningCreature;
-        GD.Print($"Entered JumpState with charge: {_creature.currentElectroCharge}");
+        GD.Print($"Entered JumpState with charge: {_creature.currentCharge}");
         _jumpPoint = FindMarker(_creature.currentJumpRope);
         _targetPoint = FindMarker(FindTarget(_creature.currentJumpRope.jumpBody));
         _pointPos = _jumpPoint.GlobalPosition;
         _targetPos = _targetPoint.GlobalPosition;
-        _creature.currentElectroCharge -= _creature.currentJumpRope.jumpCost;
+        _creature.currentCharge -= _creature.currentJumpRope.jumpCost;
         _creature.currentJumpRope = null;
     }
 
+    // Finds the target connected to current jumprope
     private JumpRope FindTarget(Array<Area2D> bodies)
     {
         if (bodies.Count == 1)
@@ -58,6 +64,7 @@ public partial class JumpState : State
 
     public override void PhysicsUpdate(float delta)
     {
+        // Small statemachine for how jumping works
         switch (_phase)
         {
             case ClimbPhase.Align:
@@ -75,6 +82,7 @@ public partial class JumpState : State
         }
     }
 
+    // Moves the creature so they align with the pilon
     private void Move(float delta)
     {
         float diff = _pointPos.X - parent.GlobalPosition.X;

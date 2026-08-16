@@ -15,15 +15,21 @@ run/main_scene="uid://yuh7xedrwisd"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://Images/icon.svg"
 
+[autoload]
+
+SceneManager="*uid://bh0cwk78r3agn"
+PlayerData="*uid://csax82xnthdj3"
+
 [dotnet]
 
 project/assembly_name="Robot"
 
 [global_group]
 
-ElectroCharger=""
+ElectroCharger="Type of Charger"
 JumpRope=""
 Enemy=""
+player=""
 
 [input]
 
