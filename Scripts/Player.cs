@@ -1,4 +1,3 @@
-// Player.cs
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -10,11 +9,23 @@ public partial class Player : CharacterBody2D
     [Export] public float BaseJumpVelocity = -4000f;
     [Export] public float BaseSize = 10f;
     [Export] public float Gravity = 9000f;
+    [Export] public float CoyoteTime = 0.12f;
+    [Export] public float JumpBufferTime = 0.12f;
+    [Export] public float JumpCutMultiplier = 0.45f;
+    [Export] public float FallGravityMultiplier = 1.35f;
+    [Export] public float LowJumpGravityMultiplier = 1.6f;
+    [Export] public float GroundAcceleration = 18000f;
+    [Export] public float GroundDeceleration = 22000f;
+    [Export] public float AirAcceleration = 14000f;
+    [Export] public float AirDeceleration = 12000f;
     [Export] public PackedScene BubblePlatformScene;
     [Export] public PackedScene AirGustScene;
     
 
     private ProgressBar airBar;
+    private ProgressBar HealthBar;
+    private int Maxhealth = 100;
+    private int CurrentHealth;
     private Sprite2D playerSprite;
     private Sprite2D indicator;
     private Area2D scanArea;
@@ -37,9 +48,21 @@ public partial class Player : CharacterBody2D
     public LightningForm lightningForm;
     public WaterForm waterForm;
 
+
+    private bool inWater = false;
+
+    private float coyoteTimer = 0f;
+    private float jumpBufferTimer = 0f;
+
+    [Export] public float WaterGravity = 1500f;
+    [Export] public float WaterFloatForce = -2500f;
+    [Export] public float MaxWaterFallSpeed = 600f;
+
     public HashSet<int> KnownCreatures => knownCreatures;
     public List<int> KnownCreatureList => knownCreatureList;
     public Area2D ScanArea => scanArea;
+    private Area2D ElectricAttack;
+    private Sprite2D ElectricAttackVisual;
 
     public override void _Ready()
     {
@@ -49,7 +72,14 @@ public partial class Player : CharacterBody2D
         transformCircle = GetNode<Node2D>("TransformCircle");
         radialMenu = GetNode<RadialMenu>("TransformCircle");
         airBar = GetNode<ProgressBar>("AirBar");
+        HealthBar = GetNode<ProgressBar>("Healthbar");
+        ElectricAttack = GetNode<Area2D>("ElectricAttack");
+        ElectricAttack.Monitoring = false;
+        ElectricAttackVisual = GetNode<Sprite2D>("ElectricAttack/AttackVisual");
+        ElectricAttackVisual.Visible = false;
 
+        CurrentHealth = Maxhealth;
+        HealthBar.Value = CurrentHealth;
 
         radialMenu.Visible = false;
         indicator.Visible = false;
@@ -72,6 +102,7 @@ public partial class Player : CharacterBody2D
         HandleMovement(delta);
         MoveAndSlide();
 
+        CheckDeath();
         HandleTransform();
         UpdateRadialSelection();
         FixRadialScale();
@@ -94,13 +125,61 @@ public partial class Player : CharacterBody2D
 
     private void HandleMovement(double delta)
     {
+        float dt = (float)delta;
         Vector2 velocity = Velocity;
+        bool jumpPressed = Input.IsActionJustPressed("Player_Jump");
+        bool jumpReleased = Input.IsActionJustReleased("Player_Jump");
+        bool jumpHeld = Input.IsActionPressed("Player_Jump");
+        bool onFloor = IsOnFloor();
 
-        if (!IsOnFloor())
-            velocity.Y += Gravity * (float)delta;
+        if (jumpPressed)
+            jumpBufferTimer = JumpBufferTime;
+        else
+            jumpBufferTimer = Mathf.Max(jumpBufferTimer - dt, 0f);
 
-        if (Input.IsActionJustPressed("Player_Jump") && IsOnFloor())
-            velocity.Y = currentJumpVelocity;
+        if (onFloor)
+            coyoteTimer = CoyoteTime;
+        else
+            coyoteTimer = Mathf.Max(coyoteTimer - dt, 0f);
+
+        if (inWater)
+        {
+            coyoteTimer = 0f;
+            jumpBufferTimer = 0f;
+
+            velocity.Y += WaterGravity * dt;
+
+            if (velocity.Y > 0)
+                velocity.Y += WaterFloatForce * dt;
+
+            velocity.Y = Mathf.Min(velocity.Y, MaxWaterFallSpeed);
+
+            if (jumpPressed)
+                velocity.Y = currentJumpVelocity * 0.75f;
+        }
+        else
+        {
+            if (!onFloor)
+            {
+                float gravityMultiplier = 1f;
+                if (velocity.Y > 0)
+                    gravityMultiplier = FallGravityMultiplier;
+                else if (velocity.Y < 0 && !jumpHeld)
+                    gravityMultiplier = LowJumpGravityMultiplier;
+
+                velocity.Y += Gravity * gravityMultiplier * dt;
+            }
+
+            if (jumpBufferTimer > 0f && coyoteTimer > 0f)
+            {
+                velocity.Y = currentJumpVelocity;
+                jumpBufferTimer = 0f;
+                coyoteTimer = 0f;
+            }
+
+            if (jumpReleased && velocity.Y < 0)
+                velocity.Y *= JumpCutMultiplier;
+        }
 
         float direction = Input.GetAxis("Player_Left", "Player_Right");
 
@@ -112,7 +191,15 @@ public partial class Player : CharacterBody2D
         if (CurrentForm == FormType.Lightning && lightningForm.IsCharged)
             speed *= lightningForm.SpeedMultiplier;
 
-        velocity.X = Mathf.Lerp(velocity.X, direction * speed, 0.15f);
+        float targetSpeed = direction * speed;
+        float acceleration;
+
+        if (direction != 0)
+            acceleration = onFloor ? GroundAcceleration : AirAcceleration;
+        else
+            acceleration = onFloor ? GroundDeceleration : AirDeceleration;
+
+        velocity.X = Mathf.MoveToward(velocity.X, targetSpeed, acceleration * dt);
 
         Velocity = velocity;
     }
@@ -121,6 +208,18 @@ public partial class Player : CharacterBody2D
     {
         return facingDirection;
     }
+    public void SetInWater(bool value)
+    {
+        inWater = value;
+    }
+    public void CheckDeath()
+    {
+        if (CurrentHealth <= 0)
+        {
+            GD.Print("Yo you dead Fr Fr.");
+        }
+    }
+        
 
     public void ApplyStats(float speed, float jump, float size)
     {
@@ -248,4 +347,45 @@ public partial class Player : CharacterBody2D
         airBar.MaxValue = maxValue;
         airBar.Value = value;
     }
+    public void TakeDamage(int value)
+    {
+        CurrentHealth -= value;
+        HealthBar.Value = CurrentHealth;
+        GD.Print("Health =", CurrentHealth);
+    }
+    public void DealDamage(int value)
+    {
+        GD.Print("deal damage");
+    }
+    public void AttackHitbox(int damage)
+{
+    UpdateAttackDirection();
+    ElectricAttack.Monitoring = true;
+        ElectricAttackVisual.Visible = true;
+
+
+    foreach (Node2D body in ElectricAttack.GetOverlappingBodies())
+    {
+        if (body.HasMethod("TakeDamage"))
+        {
+            body.Call("TakeDamage", damage);
+        }
+    }
+
+    ElectricAttack.Monitoring = false;
+}
+public void HideAttackVisual()
+{
+    ElectricAttackVisual.Visible = false;
+}
+private void UpdateAttackDirection()
+{
+    int direction = GetFacingDirection();
+
+    // Mirror the entire attack Area2D.
+    ElectricAttack.Scale = new Vector2(
+        Mathf.Abs(ElectricAttack.Scale.X) * direction,
+        ElectricAttack.Scale.Y
+    );
+}
 }

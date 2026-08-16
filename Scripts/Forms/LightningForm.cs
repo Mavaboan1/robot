@@ -16,10 +16,18 @@ public partial class LightningForm : Node
     private bool isBlitzing = false;
     private float blitzTimer = 0f;
     private Vector2 blitzDirection;
+    [Export] public float ComboResetTime = 0.45f;
+    [Export] public float AttackDuration = 0.18f;
+
+    private int comboStep = 0;
+    private float comboTimer = 0f;
+    private float attackTimer = 0f;
+    private bool isAttacking = false;
 
     public void Update(Player player, double delta)
     {
         HandleDash(player, delta);
+        HandleAttack(player,delta);
     }
 
     private void HandleDash(Player player, double delta)
@@ -65,4 +73,63 @@ public partial class LightningForm : Node
         else
             player.SetIndicator(false, Colors.White);
     }
+    private void HandleAttack(Player player, double delta)
+{
+    float dt = (float)delta;
+
+    if (comboTimer > 0)
+        comboTimer -= dt;
+    else
+        comboStep = 0;
+
+    if (isAttacking)
+    {
+        attackTimer -= dt;
+
+        if (attackTimer <= 0)
+            {
+            isAttacking = false;
+            player.HideAttackVisual();
+            }
+            
+
+    }
+
+    if (Input.IsActionJustPressed("Player_PrimFire"))
+    {
+        StartAttack(player);
+    }
+}
+
+private void StartAttack(Player player)
+{
+
+    comboStep++;
+
+    if (comboStep > 3)
+        comboStep = 1;
+
+    comboTimer = ComboResetTime;
+    attackTimer = AttackDuration;
+    isAttacking = true;
+
+    switch (comboStep)
+    {
+        case 1:
+            GD.Print("Lightning attack 1");
+            player.AttackHitbox(5);
+            break;
+
+        case 2:
+            GD.Print("Lightning attack 2");
+            player.AttackHitbox(6);
+            break;
+
+        case 3:
+            GD.Print("Lightning finisher");
+            player.AttackHitbox(10);
+            comboStep = 0;
+            break;
+    }
+}
 }
