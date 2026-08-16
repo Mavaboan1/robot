@@ -10,13 +10,9 @@ public partial class RoamingState : State
     private bool playerDetected = false;
 
     private LightningCreature _creature;
-
     private Random rand;
-
     private bool roaming;
-    
     private bool inState;
-
     private int direction = -1;
 
     public override void Enter()
@@ -30,22 +26,20 @@ public partial class RoamingState : State
     public override void Exit()
     {
         roaming = false;
-        
     }
 
     public override void PhysicsUpdate(float delta)
     {
+        // Transition to attack phase. Currently does nothing.
         if (playerDetected)
         {
             fsm.TransitionTo("Attack");
             }
         if (roaming)
             Move(delta);
-        
-
-        
     }
 
+    // Moves left to right, movement changed if reaching edge.
     private void Move(float delta)
     {
         Vector2 velocity = parent.Velocity;
@@ -64,11 +58,11 @@ public partial class RoamingState : State
         velocity.X = direction * _creature.speed;
         parent.Velocity = velocity;
 
-        
         parent.MoveAndSlide();
 
     }
 
+    // Do some damage stuff.
     private void OnPlayerDetectionBodyEntered(Node2D body)
     {
         if (body.IsInGroup("player"))
@@ -82,6 +76,7 @@ public partial class RoamingState : State
         if (roaming)
         {
             GD.Print("Collides with Area");
+            // Random chance to charge up charge if below half charge.
             if (area.IsInGroup("ElectroCharger"))
             {
                 double halfCharge = _creature.maxCharge * 0.5;
@@ -96,6 +91,7 @@ public partial class RoamingState : State
                 }
             }
 
+            // if enough charge, use the jump rope to go from this one to the connected one.
             if (area.IsInGroup("JumpRope"))
             {
                 JumpRope jumpRope = area as JumpRope;
@@ -113,9 +109,9 @@ public partial class RoamingState : State
                 }
             }
         }
-
     }
 
+    // sets jumprope to null after jumping
     private void OnNodeDetectAreaExited(Area2D area)
     {
         if (roaming)

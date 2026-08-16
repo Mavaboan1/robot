@@ -32,6 +32,8 @@ TargetZoneId = "test2"
 [node name="SpawnPoint" parent="LoadZones/ZoneLoadArea" unique_id=177589703 instance=ExtResource("4_gse8g")]
 SpawnId = "test1"
 
+[node name="ZoneLoadArea3" parent="LoadZones" unique_id=300014481 instance=ExtResource("3_t1yl5")]
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1059995858]
 position = Vector2(3918, -1872)
 zoom = Vector2(0.08, 0.08)

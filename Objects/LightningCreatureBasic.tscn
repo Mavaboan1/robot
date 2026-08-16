@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Scripts/ElectorCreature/LightningRoamingState.cs" id="4_iyxua"]
 [ext_resource type="Script" uid="uid://b2sjx1ayim8l3" path="res://Scripts/ElectorCreature/AttackState.cs" id="5_baprb"]
 [ext_resource type="Script" uid="uid://c7q5185vnqrb1" path="res://Scripts/ElectorCreature/ChargeState.cs" id="6_gfq41"]
-[ext_resource type="Script" path="res://Scripts/ElectorCreature/LightningJumpState.cs" id="7_jp6g4"]
+[ext_resource type="Script" uid="uid://ky4ca1rp8hht" path="res://Scripts/ElectorCreature/LightningJumpState.cs" id="7_jp6g4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_fmdfj"]
 radius = 18.0
