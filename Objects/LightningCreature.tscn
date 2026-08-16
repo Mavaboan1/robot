@@ -1,9 +1,8 @@
-[gd_scene format=3 uid="uid://cv1hfa6y8tlly"]
+[gd_scene format=3 uid="uid://5or3wh6btvfh"]
 
 [ext_resource type="Script" uid="uid://bd31ptwx6x21n" path="res://Scripts/ElectorCreature/LightningCreature.cs" id="1_fmdfj"]
 [ext_resource type="Texture2D" uid="uid://bv3a06bbad74a" path="res://Images/circle-32.png" id="1_g6nir"]
 [ext_resource type="Script" uid="uid://byfch8wbrnqps" path="res://Scripts/StateMachine.cs" id="2_cbfhk"]
-[ext_resource type="Script" uid="uid://ckcqpmw8e7jmu" path="res://Scripts/ElectorCreature/LightningRoamingState.cs" id="3_cbfhk"]
 [ext_resource type="Script" uid="uid://b2sjx1ayim8l3" path="res://Scripts/ElectorCreature/AttackState.cs" id="5_8hom3"]
 [ext_resource type="Script" uid="uid://c7q5185vnqrb1" path="res://Scripts/ElectorCreature/ChargeState.cs" id="6_yyooc"]
 
@@ -24,10 +23,8 @@ scale = Vector2(7, 7)
 collision_layer = 5
 collision_mask = 5
 script = ExtResource("1_fmdfj")
-jumpChance = 0.2
 stateMachine = NodePath("FSM")
 speed = 400
-chargeChance = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1189253160]
 texture = ExtResource("1_g6nir")
@@ -50,10 +47,7 @@ script = ExtResource("2_cbfhk")
 initialState = NodePath("Roaming")
 parent = NodePath("..")
 
-[node name="Roaming" type="Node2D" parent="FSM" unique_id=1083187024 node_paths=PackedStringArray("ledgeCheckLeft", "ledgeCheckRight")]
-script = ExtResource("3_cbfhk")
-ledgeCheckLeft = NodePath("LedgeCheckLeft")
-ledgeCheckRight = NodePath("LedgeCheckRight")
+[node name="Roaming" type="Node2D" parent="FSM" unique_id=1083187024]
 
 [node name="LedgeCheckLeft" type="RayCast2D" parent="FSM/Roaming" unique_id=675147116]
 position = Vector2(-19, 6)

@@ -2,9 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://ctwqujuqq0uom" path="res://Objects/Detectables/ElectroCharge.tscn" id="1_ak5v8"]
 [ext_resource type="PackedScene" uid="uid://da4p7cv5fxuj4" path="res://Objects/Detectables/JumpRope.tscn" id="2_x033f"]
-[ext_resource type="PackedScene" uid="uid://d6dp35v15yab" path="res://Scenes/test-tilemap-layer.tscn" id="3_ak5v8"]
+[ext_resource type="PackedScene" path="res://Scenes/test-tilemap-layer.tscn" id="3_ak5v8"]
 [ext_resource type="PackedScene" uid="uid://b4nt588r5wjpm" path="res://Objects/Player.tscn" id="7_rdbpf"]
 [ext_resource type="PackedScene" uid="uid://dln48usgg8m5l" path="res://Objects/Charges/WaterTrigger.tscn" id="8_oho3u"]
+[ext_resource type="PackedScene" uid="uid://c2avgpaxl4q1s" path="res://Objects/Scannables/ScannableCreature.tscn" id="9_d3awe"]
 
 [node name="TestScene" type="Node2D" unique_id=553028832]
 
@@ -28,21 +29,29 @@ position = Vector2(9327, -157)
 
 [node name="JumpRope" parent="Detectables" unique_id=747130431 node_paths=PackedStringArray("jumpBody") instance=ExtResource("2_x033f")]
 position = Vector2(1694, -658)
-jumpBody = [NodePath("../JumpRope2"), NodePath("../JumpRope3")]
+jumpBody = []
 
 [node name="JumpRope2" parent="Detectables" unique_id=1194983929 node_paths=PackedStringArray("jumpBody") instance=ExtResource("2_x033f")]
 position = Vector2(247.00002, -1889)
 scale = Vector2(0.6003404, 0.6003404)
-jumpBody = [NodePath("../JumpRope")]
+jumpBody = []
 
 [node name="JumpRope3" parent="Detectables" unique_id=89730019 node_paths=PackedStringArray("jumpBody") instance=ExtResource("2_x033f")]
 position = Vector2(3536.0002, -1317)
 scale = Vector2(0.6003404, 0.6003404)
-jumpBody = [NodePath("../JumpRope"), NodePath("../JumpRope4")]
+jumpBody = []
 
 [node name="JumpRope4" parent="Detectables" unique_id=794991110 node_paths=PackedStringArray("jumpBody") instance=ExtResource("2_x033f")]
 position = Vector2(6076, -575)
-jumpBody = [NodePath("../JumpRope3")]
+jumpBody = []
+
+[node name="Scannable Creature" parent="Detectables" unique_id=623913075 instance=ExtResource("9_d3awe")]
+position = Vector2(8920, -142)
+CreatureType = 1
+
+[node name="Scannable Creature2" parent="Detectables" unique_id=1729950800 instance=ExtResource("9_d3awe")]
+position = Vector2(3262, 409)
+CreatureType = 2
 
 [node name="TileMapLayer" parent="." unique_id=1927730750 instance=ExtResource("3_ak5v8")]
 

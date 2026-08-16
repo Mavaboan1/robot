@@ -24,8 +24,8 @@ public partial class Player : CharacterBody2D
 
     private ProgressBar airBar;
     private ProgressBar HealthBar;
-    private int Maxhealth = 100;
-    private int CurrentHealth;
+    public int Maxhealth = 100;
+    public int CurrentHealth;
     private Sprite2D playerSprite;
     private Sprite2D indicator;
     private Area2D scanArea;
@@ -41,8 +41,8 @@ public partial class Player : CharacterBody2D
 
     private bool isTransformMenuOpen = false;
 
-    private HashSet<int> knownCreatures = new();
-    private List<int> knownCreatureList = new();
+    public HashSet<int> knownCreatures = new();
+    public List<int> knownCreatureList = new();
 
     public ScanForm scanForm;
     public LightningForm lightningForm;
